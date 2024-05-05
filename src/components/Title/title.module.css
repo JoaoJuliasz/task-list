@@ -1,0 +1,21 @@
+.container {
+    align-self: start;
+}
+
+.container .titleChange {
+    font-size: 1.17em;
+    border: none;
+    background: transparent;
+    outline: none;
+    text-align: center;
+    font-weight: bold;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    color: #ffffffde;
+    padding: 0;
+    margin: 0;
+    text-align: start;
+}
+
+.container .title {
+    margin: 0;
+}
