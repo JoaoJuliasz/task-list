@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
+import style from './header.module.css'
+
 
 type Props = {
     title: string
@@ -12,11 +14,6 @@ type Props = {
 const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [headerTitle, setHeaderTitle] = useState<string>(title)
-    const [showOptions, setShowOptions] = useState<boolean>(false)
-
-    const handleOptions = (value: boolean) => {
-        setShowOptions(value)
-    }
 
     const handleDelete = () => {
         setTaskList([])
@@ -26,23 +23,21 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
     }
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}
-            onMouseEnter={() => handleOptions(true)}
-            onMouseLeave={() => handleOptions(false)}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <div className={style.container}>
+            <div className={style.titleContainer}>
                 {edit ?
-                    <input value={headerTitle} 
-                    autoFocus onBlur={() => setEdit(false)}
-                    style={{background: 'transparent', border: 'none', outline: 'none'}}
-                    onChange={e => setHeaderTitle(e.target.value)} />
+                    <input value={headerTitle}
+                        autoFocus onBlur={() => setEdit(false)}
+                        className={style.updateTitle}
+                        onChange={e => setHeaderTitle(e.target.value)} />
                     :
-                    <h5 style={{ margin: '0 10px 0 0' }} onClick={() => setEdit(true)}>{headerTitle}</h5>}
-                {!edit ? <span>{taskList.length}</span> : null}
+                    <h5 className={style.title} onClick={() => setEdit(true)}>{headerTitle}</h5>}
+                {!edit ? <span className={style.count}>{taskList.length}</span> : null}
             </div>
-            {showOptions ? <div>
-                <PlusOutlined style={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleAdd(true)} />
-                <DeleteOutlined style={{ cursor: 'pointer' }} onClick={handleDelete} />
-            </div> : null}
+            <div className={style.optionsContainer}>
+                <PlusOutlined onClick={() => handleAdd(true)} />
+                <DeleteOutlined onClick={handleDelete} />
+            </div>
         </div>
     );
 };

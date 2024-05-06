@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.container .titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .titleContainer .title {
+    font-size: 14px;
+    padding: 2px 4px;
+    background: #6e3630;
+    margin: 0 10px 0 0;
+    border-radius: 3px;
+    cursor: text;
+}
+
+.container .titleContainer .updateTitle {
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.container .titleContainer .count {
+    font-size: 14px;
+    opacity: 0.3;
+}
+
+.container .optionsContainer {
+    opacity: 0;
+}
+
+.container:hover .optionsContainer {
+    opacity: 1;
+    transition: 0.3s opacity;
+}
+
+.container .optionsContainer span{
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+}
