@@ -1,23 +1,30 @@
 import { Dispatch, SetStateAction } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import TaskCard from "../../../TaskCard/TaskCard";
+import TaskCard from "../TaskCard/TaskCard";
+
+import style from './tasks.module.css';
 
 type Props = {
     title: string
     taskList: string[]
+    newTask: number
     setTaskList: Dispatch<SetStateAction<string[]>>
+    setNewTask: Dispatch<SetStateAction<number>>
     handleAdd: (start?: boolean) => void
 }
 
-const Tasks = ({ title, taskList, setTaskList, handleAdd }: Props) => {
+const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd }: Props) => {
     return (
-        <div style={{ width: '260px' }}>
+        <div className={style.container}>
             {
-                taskList.map((task, index) => <TaskCard title={title} task={task} index={index} setTaskList={setTaskList} />)
+                taskList.map((task, index) => <TaskCard key={task + title + index} title={title} task={task}
+                    index={index} setTaskList={setTaskList} newTask={newTask} setNewTask={setNewTask} />)
             }
-            <span style={{ cursor: 'pointer', display: 'flex' }} onClick={() => handleAdd()}>
-                <PlusOutlined style={{ margin: '0 5px' }} /> New
-            </span>
+            <div className={style.new} onClick={() => handleAdd()}>
+                <span className={style.text}>
+                    <PlusOutlined className={style.plus} /> New
+                </span>
+            </div>
         </div>
     );
 };

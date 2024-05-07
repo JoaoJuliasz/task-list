@@ -8,18 +8,16 @@ type Props = {
 
 const TaskContainer = ({ title }: Props) => {
     const [taskList, setTaskList] = useState<string[]>([])
+    const [newTask, setNewTask] = useState<number>(-1)
 
     const handleAdd = (start?: boolean) => {
-        setTaskList(prev => {
-            if (start) {
-                return ['ue', ...prev]
-            }
-            return [...prev, 'oi']
-        })
+        setTaskList(prev => start ? ['', ...prev] : [...prev, ''])
 
         const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
-        taskManager[title] = taskManager[title] ? ['ue', ...taskList] : ['']
+        taskManager[title] = taskManager[title] ? (start ? ['', ...taskList] : [...taskList, '']) : ['']
         localStorage.setItem("task-manager", JSON.stringify(taskManager))
+        setNewTask(start ? 0 : taskManager[title].length - 1)
+
     }
 
     useEffect(() => {
@@ -30,7 +28,8 @@ const TaskContainer = ({ title }: Props) => {
     return (
         <div>
             <Header title={title} taskList={taskList} setTaskList={setTaskList} handleAdd={handleAdd} />
-            <Tasks title={title} taskList={taskList} setTaskList={setTaskList} handleAdd={handleAdd} />
+            <Tasks title={title} taskList={taskList} setTaskList={setTaskList} handleAdd={handleAdd}
+                newTask={newTask} setNewTask={setNewTask} />
         </div>
     );
 };
