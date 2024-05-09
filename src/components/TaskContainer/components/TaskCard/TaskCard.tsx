@@ -1,7 +1,8 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { EditOutlined } from "@ant-design/icons";
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import { CopyOutlined, EditOutlined } from "@ant-design/icons";
 
 import style from './taskCard.module.css'
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 type Props = {
     title: string
@@ -14,6 +15,7 @@ type Props = {
 
 const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
+    const [currTask, setCurrTask] = useState<string>(task)
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const handleEdit = (value: boolean) => {
@@ -22,49 +24,51 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
             textAreaRef.current?.focus()
         } else {
             setNewTask(-1)
+            // should update the state
+            updateTask()
         }
+    }
+
+    const updateTask = () => {
+        setTaskList(prev => {
+            const updtPrev = JSON.parse(JSON.stringify(prev))
+            updtPrev[index] = currTask
+            return updtPrev
+        })
+        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
+        taskManager[title][index] = currTask
+        localStorage.setItem("task-manager", JSON.stringify(taskManager))
     }
 
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value
-        setTaskList(prev => {
-            const updtPrev = JSON.parse(JSON.stringify(prev))
-            updtPrev[index] = value
-            return updtPrev
-        })
-        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
-        taskManager[title][index] = value
-        localStorage.setItem("task-manager", JSON.stringify(taskManager))
-        resizeTextArea();
+        setCurrTask(value)
     }
 
-    const resizeTextArea = () => {
-        if (!textAreaRef.current) {
-            return;
-        }
-
-        textAreaRef.current.style.height = "auto";
-        textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-    };
-
-    useEffect(() => {
-        resizeTextArea();
-        window.addEventListener("resize", resizeTextArea);
-    }, []);
-
     return (
-        <div className={style.container}>
-            <div className={style.textContainer}>
-                <textarea className={style.text}
-                    value={task} onChange={handleChange}
-                    ref={textAreaRef} placeholder="untitled" onBlur={() => handleEdit(false)}
-                    readOnly={!edit && newTask !== index} autoFocus={newTask === index} />
+        <div className={style.container} onBlur={() => handleEdit(false)}>
+            <div className={`${style.textContainer} ${edit ? style.onEdit : ''}`}>
+                <ReactTextareaAutosize className={style.text}
+                    value={currTask}
+                    onChange={handleChange}
+                    ref={textAreaRef} placeholder="untitled"
+                    readOnly={!edit && newTask !== index} autoFocus={newTask === index}
+                />
 
                 {!edit ?
-                    <a className={style.edit} onClick={() => handleEdit(true)}>
-                        <EditOutlined />
-                    </a> :
-                    null}
+                    <div className={style.actions}>
+                        <a className={style.edit} onClick={() => handleEdit(true)}>
+                            <EditOutlined />
+                        </a>
+                        <a className={style.copy} onClick={() => {
+                            console.warn('entrei', { currTask })
+                            navigator.clipboard.writeText(currTask)
+                        }}>
+                            <CopyOutlined />
+                        </a>
+                    </div>
+                    : null
+                }
             </div>
         </div>
     );
