@@ -2,13 +2,14 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
 import style from './header.module.css'
+import { Tasks } from "../../../../types/Task.type";
 
 
 type Props = {
     title: string
     taskList: string[]
     handleAdd: (start?: boolean) => void
-    setTaskList: Dispatch<SetStateAction<string[]>>
+    setTaskList: Dispatch<SetStateAction<Tasks>>
 }
 
 const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
@@ -16,7 +17,7 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
     const [headerTitle, setHeaderTitle] = useState<string>(title)
 
     const handleDelete = () => {
-        setTaskList([])
+        setTaskList(prev => ({...prev, [title]: []}))
         const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
         taskManager[title] = []
         localStorage.setItem("task-manager", JSON.stringify(taskManager))
@@ -32,7 +33,7 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
                         onChange={e => setHeaderTitle(e.target.value)} />
                     :
                     <h5 className={style.title} onClick={() => setEdit(true)}>{headerTitle}</h5>}
-                {!edit ? <span className={style.count}>{taskList.length}</span> : null}
+                {!edit ? <span className={style.count}>{taskList?.length}</span> : null}
             </div>
             <div className={style.optionsContainer}>
                 <PlusOutlined onClick={() => handleAdd(true)} />

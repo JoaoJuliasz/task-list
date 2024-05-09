@@ -11,10 +11,6 @@
     position: relative;
 }
 
-.container .textContainer.onEdit {
-    padding-left: 35px;
-}
-
 .container .textContainer .text {
     border: none;
     outline: none;

@@ -1,15 +1,16 @@
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
-
-import style from './taskCard.module.css'
 import ReactTextareaAutosize from "react-textarea-autosize";
+
+import { Tasks } from "../../../../types/Task.type";
+import style from './taskCard.module.css'
 
 type Props = {
     title: string
     task: string
     index: number
     newTask: number
-    setTaskList: Dispatch<SetStateAction<string[]>>
+    setTaskList: Dispatch<SetStateAction<Tasks>>
     setNewTask: Dispatch<SetStateAction<number>>
 }
 
@@ -31,9 +32,9 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
 
     const updateTask = () => {
         setTaskList(prev => {
-            const updtPrev = JSON.parse(JSON.stringify(prev))
+            const updtPrev = JSON.parse(JSON.stringify(prev[title]))
             updtPrev[index] = currTask
-            return updtPrev
+            return { ...prev, [title]: updtPrev }
         })
         const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
         taskManager[title][index] = currTask
@@ -47,7 +48,7 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
 
     return (
         <div className={style.container} onBlur={() => handleEdit(false)}>
-            <div className={`${style.textContainer} ${edit ? style.onEdit : ''}`}>
+            <div className={style.textContainer}>
                 <ReactTextareaAutosize className={style.text}
                     value={currTask}
                     onChange={handleChange}
@@ -61,7 +62,6 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
                             <EditOutlined />
                         </a>
                         <a className={style.copy} onClick={() => {
-                            console.warn('entrei', { currTask })
                             navigator.clipboard.writeText(currTask)
                         }}>
                             <CopyOutlined />
