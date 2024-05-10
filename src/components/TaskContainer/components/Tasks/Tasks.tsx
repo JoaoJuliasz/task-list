@@ -4,6 +4,7 @@ import TaskCard from "../TaskCard/TaskCard";
 
 import style from './tasks.module.css';
 import { Tasks as TasksType } from "../../../../types/Task.type";
+import { useDrop } from "react-dnd";
 
 type Props = {
     title: string
@@ -12,11 +13,22 @@ type Props = {
     setTaskList: Dispatch<SetStateAction<TasksType>>
     setNewTask: Dispatch<SetStateAction<number>>
     handleAdd: (start?: boolean) => void
+    handleDrop: (prevTitle: string, title: string, task: string, taskIndex: number) => void
 }
 
-const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd }: Props) => {
+const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd, handleDrop }: Props) => {
+
+
+    const [_, dropRef] = useDrop({
+        accept: 'TASK',
+        drop: (item: any) => handleDrop(item.title, title, item.task, item.taskIndex),
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+        }),
+    });
+
     return (
-        <div className={style.container}>
+        <div className={style.container} ref={dropRef}>
             {
                 taskList?.map((task, index) => <TaskCard key={task + title + index} title={title} task={task}
                     index={index} setTaskList={setTaskList} newTask={newTask} setNewTask={setNewTask} />)

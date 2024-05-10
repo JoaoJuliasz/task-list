@@ -1,4 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import { useDrag } from "react-dnd";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
@@ -17,6 +18,15 @@ type Props = {
 const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [currTask, setCurrTask] = useState<string>(task)
+
+    const [{ isDragging }, dragRef] = useDrag({
+        type: 'TASK',
+        item: { title, task, taskIndex: index },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const handleEdit = (value: boolean) => {
@@ -46,24 +56,29 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
         setCurrTask(value)
     }
 
+    const copyToClipboard = () => navigator.clipboard.writeText(currTask);
+
     return (
-        <div className={style.container} onBlur={() => handleEdit(false)}>
+        <div className={`${style.container} ${isDragging ? style.dragging : ''}`} onBlur={() => handleEdit(false)} ref={dragRef}>
             <div className={style.textContainer}>
-                <ReactTextareaAutosize className={style.text}
-                    value={currTask}
-                    onChange={handleChange}
-                    ref={textAreaRef} placeholder="untitled"
-                    readOnly={!edit && newTask !== index} autoFocus={newTask === index}
-                />
+                {edit ?
+                    <ReactTextareaAutosize className={style.text}
+                        value={currTask}
+                        onChange={handleChange}
+                        ref={textAreaRef} placeholder="untitled"
+                        autoFocus={true}
+                    /> :
+                    <div className={style.notEdit}>
+                        <span style={{ opacity: !currTask ? 0.4 : 1 }}>{currTask || 'untitled'}</span>
+                    </div>
+                }
 
                 {!edit ?
                     <div className={style.actions}>
                         <a className={style.edit} onClick={() => handleEdit(true)}>
                             <EditOutlined />
                         </a>
-                        <a className={style.copy} onClick={() => {
-                            navigator.clipboard.writeText(currTask)
-                        }}>
+                        <a className={style.copy} onClick={copyToClipboard}>
                             <CopyOutlined />
                         </a>
                     </div>
@@ -72,6 +87,7 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
             </div>
         </div>
     );
+
 };
 
 export default TaskCard;

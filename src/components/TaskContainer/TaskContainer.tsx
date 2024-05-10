@@ -22,11 +22,25 @@ const TaskContainer = ({ title, tasks, setTaskList }: Props) => {
 
     }
 
+    const handleDrop = (prevTitle: string, title: string, task: string, taskIndex: number) => {
+        setTaskList(prev => {
+            const updtTaskList: TasksType = JSON.parse(JSON.stringify(prev))
+            updtTaskList[prevTitle].splice(taskIndex, 1)
+            updtTaskList[title] = updtTaskList[title] ? [...updtTaskList[title], task] : [task]
+            return ({ ...prev, [title]: updtTaskList[title], [prevTitle]: updtTaskList[prevTitle] })
+        })
+
+        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
+        taskManager[prevTitle].splice(taskIndex, 1)
+        taskManager[title] = taskManager[title] ? [...taskManager[title], task] : [task]
+        localStorage.setItem("task-manager", JSON.stringify(taskManager))
+    }
+
     return (
         <div>
             <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={handleAdd} />
             <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={handleAdd}
-                newTask={newTask} setNewTask={setNewTask} />
+                newTask={newTask} setNewTask={setNewTask} handleDrop={handleDrop} />
         </div>
     );
 };
