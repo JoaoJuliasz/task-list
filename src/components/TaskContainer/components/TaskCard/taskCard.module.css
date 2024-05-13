@@ -71,6 +71,7 @@
 .container .textContainer .edit:hover,
 .container .textContainer .copy:hover {
     background: #3e3d3dfa;
+    transition: 0.3s background;
 }
 
 .container:hover .textContainer .edit,

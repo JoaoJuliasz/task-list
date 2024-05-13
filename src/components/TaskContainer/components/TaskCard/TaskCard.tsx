@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from "react";
 import { useDrag } from "react-dnd";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
 import ReactTextareaAutosize from "react-textarea-autosize";
@@ -56,15 +56,22 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
         setCurrTask(value)
     }
 
+    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter') {
+            setEdit(false)
+        }
+    }
+
     const copyToClipboard = () => navigator.clipboard.writeText(currTask);
 
     return (
         <div className={`${style.container} ${isDragging ? style.dragging : ''}`} onBlur={() => handleEdit(false)} ref={dragRef}>
             <div className={style.textContainer}>
-                {edit ?
+                {edit || newTask === index ?
                     <ReactTextareaAutosize className={style.text}
                         value={currTask}
                         onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                         ref={textAreaRef} placeholder="untitled"
                         autoFocus={true}
                     /> :
@@ -73,7 +80,7 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
                     </div>
                 }
 
-                {!edit ?
+                {!edit || newTask !== index ?
                     <div className={style.actions}>
                         <a className={style.edit} onClick={() => handleEdit(true)}>
                             <EditOutlined />
