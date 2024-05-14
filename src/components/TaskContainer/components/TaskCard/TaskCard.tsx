@@ -1,10 +1,13 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { CopyOutlined, EditOutlined } from "@ant-design/icons";
+import { CopyOutlined, DashOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
 import { Tasks } from "../../../../types/Task.type";
 import style from './taskCard.module.css'
+import { ControlledMenu, MenuItem, useHover } from "@szhsin/react-menu";
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css';
 
 type Props = {
     title: string
@@ -20,7 +23,11 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handle
     const [edit, setEdit] = useState<boolean>(false)
     const [currTask, setCurrTask] = useState<string>(task)
 
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const { anchorProps, hoverProps } = useHover(isOpen, setOpen);
+
     const dragRef = useRef<HTMLDivElement>(null);
+    const ref = useRef(null);
 
     const [{ isDragging }, drag] = useDrag({
         type: 'TASK',
@@ -87,6 +94,14 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handle
         }
     }
 
+    const handleDelete = () => {
+        setTaskList(prev => {
+            prev[title].splice(index, 1)
+            localStorage.setItem("task-manager", JSON.stringify(prev))
+            return { ...prev }
+        })
+    }
+
     const copyToClipboard = () => navigator.clipboard.writeText(currTask);
 
     return (
@@ -110,9 +125,18 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handle
                         <a className={style.edit} onClick={() => handleEdit(true)}>
                             <EditOutlined />
                         </a>
-                        <a className={style.copy} onClick={copyToClipboard}>
-                            <CopyOutlined />
-                        </a>
+                        <div className={style.copy} ref={ref} {...anchorProps}>
+                            <DashOutlined />
+                        </div>
+                        <ControlledMenu
+                            {...hoverProps}
+                            state={isOpen ? 'open' : 'closed'}
+                            anchorRef={ref}
+                            onClose={() => setOpen(false)}
+                        >
+                            <MenuItem onClick={copyToClipboard}><CopyOutlined /> Copy</MenuItem>
+                            <MenuItem onClick={handleDelete}><DeleteOutlined /> Remove</MenuItem>
+                        </ControlledMenu>
                     </div>
                     : null
                 }

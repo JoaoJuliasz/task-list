@@ -47,6 +47,7 @@
     top: 8px;
     right: 5px;
     position: absolute;
+    display: flex;
 }
 
 .container .textContainer .actions .edit {
@@ -60,7 +61,7 @@
 
 .container .textContainer .actions .edit,
 .container .textContainer .actions .copy {
-    opacity: 0;
+    opacity: 1  ;
     cursor: pointer;
     color: #fff;
     background: #2c2929;
