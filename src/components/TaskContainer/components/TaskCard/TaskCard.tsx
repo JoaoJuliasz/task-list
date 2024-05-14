@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from "react";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
@@ -13,20 +13,45 @@ type Props = {
     newTask: number
     setTaskList: Dispatch<SetStateAction<Tasks>>
     setNewTask: Dispatch<SetStateAction<number>>
+    handleDrop: (prevTitle: string, title: string, taskIndex: number, hoverIndex: number) => void
 }
 
-const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Props) => {
+const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handleDrop }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [currTask, setCurrTask] = useState<string>(task)
 
-    const [{ isDragging }, dragRef] = useDrag({
+    const dragRef = useRef<HTMLDivElement>(null);
+
+    const [{ isDragging }, drag] = useDrag({
         type: 'TASK',
-        item: { title, task, taskIndex: index },
+        item: { title, taskIndex: index },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
     });
 
+    const [, drop] = useDrop({
+        accept: "TASK",
+        hover(item: any) {
+            if (!dragRef.current) {
+                return;
+            }
+            if (item.taskIndex === index && item.title === title) {
+                return;
+            }
+        },
+        drop: (item, monitor) => {
+            if (!monitor.didDrop()) {
+                const dragIndex = item.taskIndex;
+                const hoverIndex = index;
+                if (dragIndex !== hoverIndex || item.title !== title) {
+                    handleDrop(item.title, title, dragIndex, hoverIndex);
+                }
+            }
+        },
+    });
+
+    drag(drop(dragRef));
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const handleEdit = (value: boolean) => {
@@ -58,7 +83,7 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
 
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter') {
-            setEdit(false)
+            handleEdit(false)
         }
     }
 
