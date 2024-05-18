@@ -1,12 +1,13 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
 import Menu from "./components/Menu/Menu";
+import TaskInput from "./components/TaskInput/TaskInput";
 
 import { useTask } from "../../../../hooks/useTask";
+import {useDragNDrop} from "../../../../hooks/useDragNDrop";
 
 import { Tasks } from "../../../../types/Task.type";
+
 import style from './taskCard.module.css'
-import TaskInput from "./components/TaskInput/TaskInput";
 
 type Props = {
     title: string
@@ -23,39 +24,29 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
 
     const { updateTask, updateListOnDrop } = useTask(setTaskList)
 
-    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
     const dragRef = useRef<HTMLDivElement>(null);
 
-    const [{ isDragging }, drag] = useDrag({
-        type: 'TASK',
-        item: { title, taskIndex: index },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    });
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const [, drop] = useDrop({
-        accept: "TASK",
-        hover(item: any) {
-            if (!dragRef.current) {
-                return;
+    const hoverFn = (item: any) => {
+        if (!dragRef.current) {
+            return;
+        }
+        if (item.taskIndex === index && item.title === title) {
+            return;
+        }
+    }
+    const dropFn = (item: any, monitor: any) => {
+        if (!monitor.didDrop()) {
+            const dragIndex = item.taskIndex;
+            const hoverIndex = index;
+            if (dragIndex !== hoverIndex || item.title !== title) {
+                updateListOnDrop(item.title, title, dragIndex, hoverIndex);
             }
-            if (item.taskIndex === index && item.title === title) {
-                return;
-            }
-        },
-        drop: (item, monitor) => {
-            if (!monitor.didDrop()) {
-                const dragIndex = item.taskIndex;
-                const hoverIndex = index;
-                if (dragIndex !== hoverIndex || item.title !== title) {
-                    updateListOnDrop(item.title, title, dragIndex, hoverIndex);
-                }
-            }
-        },
-    });
+        }
+    }
 
-    drag(drop(dragRef));
+    const { isDragging } = useDragNDrop('TASK', dragRef, { title, taskIndex: index }, hoverFn, dropFn)
 
     const handleEdit = (value: boolean) => {
         setEdit(value)

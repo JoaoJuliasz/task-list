@@ -1,13 +1,15 @@
 import { Dispatch, SetStateAction, useRef } from "react"
-import { useDrag, useDrop } from "react-dnd"
 
 import Header from "./components/Header/Header"
 import Tasks from "./components/Tasks/Tasks"
 
+import { useTask } from "../../hooks/useTask"
+import { useDragNDrop } from "../../hooks/useDragNDrop"
+
 import { Tasks as TasksType } from "../../types/Task.type"
 
 import style from './taskContainer.module.css'
-import { useTask } from "../../hooks/useTask"
+import { Item } from "../../types/DragNDrop.type"
 
 type Props = {
     title: string
@@ -20,33 +22,23 @@ type Props = {
 const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) => {
     const { newTask, setNewTask, addTask } = useTask(setTaskList)
 
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
 
-    const [{ isDragging }, drag] = useDrag({
-        type: 'ITEM',
-        item: { type: "ITEM", index },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    });
+    const hoverFn = (item: Item) => {
+        if (!ref.current) {
+            return
+        }
+        const dragIndex = item.index as number
+        const hoverIndex = index
+        if (dragIndex === hoverIndex) {
+            return
+        }
+        moveItem(dragIndex, hoverIndex)
+        item.index = hoverIndex
+    }
 
-    const [, drop] = useDrop({
-        accept: "ITEM",
-        hover(item: { type: string, index: number }) {
-            if (!ref.current) {
-                return
-            }
-            const dragIndex = item.index
-            const hoverIndex = index
-            if (dragIndex === hoverIndex) {
-                return
-            }
-            moveItem(dragIndex, hoverIndex)
-            item.index = hoverIndex
-        },
-    })
+    const { isDragging } = useDragNDrop('ITEM', ref, { type: "ITEM", index }, hoverFn)
 
-    drag(drop(ref))
 
     return (
         <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
