@@ -1,12 +1,10 @@
-import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-
-import ReactTextareaAutosize from "react-textarea-autosize";
-
 import Menu from "./components/Menu/Menu";
 
 import { Tasks } from "../../../../types/Task.type";
 import style from './taskCard.module.css'
+import TaskInput from "./components/TaskInput/TaskInput";
 
 type Props = {
     title: string
@@ -22,6 +20,7 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handle
     const [edit, setEdit] = useState<boolean>(false)
     const [currTask, setCurrTask] = useState<string>(task)
 
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
     const dragRef = useRef<HTMLDivElement>(null);
 
     const [{ isDragging }, drag] = useDrag({
@@ -54,7 +53,6 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handle
     });
 
     drag(drop(dragRef));
-    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const handleEdit = (value: boolean) => {
         setEdit(value)
@@ -78,32 +76,11 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask, handle
         localStorage.setItem("task-manager", JSON.stringify(taskManager))
     }
 
-    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const value = e.target.value
-        setCurrTask(value)
-    }
-
-    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter') {
-            handleEdit(false)
-        }
-    }
-
     return (
         <div className={`${style.container} ${isDragging ? style.dragging : ''}`} onBlur={() => handleEdit(false)} ref={dragRef}>
             <div className={style.textContainer}>
-                {edit || newTask === index ?
-                    <ReactTextareaAutosize className={style.text}
-                        value={currTask}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        ref={textAreaRef} placeholder="untitled"
-                        autoFocus={true}
-                    /> :
-                    <div className={style.notEdit}>
-                        <span style={{ opacity: !currTask ? 0.4 : 1 }}>{currTask || 'untitled'}</span>
-                    </div>
-                }
+                <TaskInput currTask={currTask} textAreaRef={textAreaRef} validation={edit || newTask === index}
+                    setCurrTask={setCurrTask} handleEdit={handleEdit} />
 
                 {!edit || newTask !== index ?
                     <Menu title={title} index={index} currTask={currTask} setTaskList={setTaskList} handleEdit={handleEdit} />
