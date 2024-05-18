@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 
 import Header from "./components/Header/Header"
@@ -7,6 +7,7 @@ import Tasks from "./components/Tasks/Tasks"
 import { Tasks as TasksType } from "../../types/Task.type"
 
 import style from './taskContainer.module.css'
+import { useTask } from "../../hooks/useTask"
 
 type Props = {
     title: string
@@ -17,7 +18,8 @@ type Props = {
 }
 
 const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) => {
-    const [newTask, setNewTask] = useState<number>(-1)
+    const { newTask, setNewTask, addTask } = useTask(setTaskList)
+
     const ref = useRef(null)
 
     const [{ isDragging }, drag] = useDrag({
@@ -46,47 +48,11 @@ const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) =>
 
     drag(drop(ref))
 
-    const handleAdd = (start?: boolean) => {
-        setTaskList(prev => ({ ...prev, [title]: start ? ['', ...prev[title]] : [...prev[title], ''] }))
-
-        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
-        taskManager[title] = taskManager[title] ? (start ? ['', ...tasks] : [...tasks, '']) : ['']
-        localStorage.setItem("task-manager", JSON.stringify(taskManager))
-        setNewTask(start ? 0 : taskManager[title].length - 1)
-
-    }
-
-    const handleDrop = (prevTitle: string, title: string, taskIndex: number, hoverIndex: number) => {
-        setTaskList(prev => {
-            const updatedTaskList = { ...prev }  // Shallow copy of the task list
-
-            if (!updatedTaskList[prevTitle] || !updatedTaskList[title]) {
-                return prev
-            }
-
-            const movedTask = updatedTaskList[prevTitle][taskIndex]
-            updatedTaskList[prevTitle] = [
-                ...updatedTaskList[prevTitle].slice(0, taskIndex),
-                ...updatedTaskList[prevTitle].slice(taskIndex + 1)
-            ]
-
-            updatedTaskList[title] = [
-                ...updatedTaskList[title].slice(0, hoverIndex),
-                movedTask,
-                ...updatedTaskList[title].slice(hoverIndex)
-            ]
-
-            localStorage.setItem('task-manager', JSON.stringify(updatedTaskList))
-
-            return updatedTaskList
-        })
-    }
-
     return (
         <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
-            <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={handleAdd} />
-            <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={handleAdd}
-                newTask={newTask} setNewTask={setNewTask} handleDrop={handleDrop} />
+            <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} />
+            <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask}
+                newTask={newTask} setNewTask={setNewTask} />
         </div>
     )
 }

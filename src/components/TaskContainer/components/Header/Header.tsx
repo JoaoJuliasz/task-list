@@ -8,7 +8,7 @@ import { Tasks } from "../../../../types/Task.type";
 type Props = {
     title: string
     taskList: string[]
-    handleAdd: (start?: boolean) => void
+    handleAdd: (title: string, start?: boolean | undefined) => void
     setTaskList: Dispatch<SetStateAction<Tasks>>
 }
 
@@ -17,7 +17,7 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
     const [headerTitle, setHeaderTitle] = useState<string>(title)
 
     const handleDelete = () => {
-        setTaskList(prev => ({...prev, [title]: []}))
+        setTaskList(prev => ({ ...prev, [title]: [] }))
         const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
         taskManager[title] = []
         localStorage.setItem("task-manager", JSON.stringify(taskManager))
@@ -36,7 +36,7 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
                 {!edit ? <span className={style.count}>{taskList?.length}</span> : null}
             </div>
             <div className={style.optionsContainer}>
-                <PlusOutlined onClick={() => handleAdd(true)} />
+                <PlusOutlined onClick={() => handleAdd(title, true)} />
                 <DeleteOutlined onClick={handleDelete} />
             </div>
         </div>

@@ -4,7 +4,6 @@ import TaskCard from "../TaskCard/TaskCard";
 
 import style from './tasks.module.css';
 import { Tasks as TasksType } from "../../../../types/Task.type";
-import { useDrop } from "react-dnd";
 
 type Props = {
     title: string
@@ -12,11 +11,10 @@ type Props = {
     newTask: number
     setTaskList: Dispatch<SetStateAction<TasksType>>
     setNewTask: Dispatch<SetStateAction<number>>
-    handleAdd: (start?: boolean) => void
-    handleDrop: (prevTitle: string, title: string, taskIndex: number, hoverIndex: number) => void
+    handleAdd: (title: string, start?: boolean | undefined) => void
 }
 
-const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd, handleDrop }: Props) => {
+const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd }: Props) => {
 
     return (
         <div className={style.container}>
@@ -24,9 +22,9 @@ const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd, h
                 taskList?.map((task, index) => <TaskCard key={task + title + index}
                     title={title} task={task}
                     index={index} setTaskList={setTaskList} newTask={newTask}
-                    setNewTask={setNewTask} handleDrop={handleDrop} />)
+                    setNewTask={setNewTask} />)
             }
-            <div className={style.new} onClick={() => handleAdd()}>
+            <div className={style.new} onClick={() => handleAdd(title)}>
                 <span className={style.text}>
                     <PlusOutlined className={style.plus} /> New
                 </span>

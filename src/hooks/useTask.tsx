@@ -1,0 +1,62 @@
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { Tasks } from "../types/Task.type";
+
+export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
+
+    const [newTask, setNewTask] = useState<number>(-1)
+
+
+    const updateListOnDrop = useCallback((prevTitle: string, title: string, taskIndex: number, hoverIndex: number) => {
+        setTaskList(prev => {
+            const updatedTaskList = { ...prev }  // Shallow copy of the task list
+
+            if (!updatedTaskList[prevTitle] || !updatedTaskList[title]) {
+                return prev
+            }
+
+            const movedTask = updatedTaskList[prevTitle][taskIndex]
+            updatedTaskList[prevTitle] = [
+                ...updatedTaskList[prevTitle].slice(0, taskIndex),
+                ...updatedTaskList[prevTitle].slice(taskIndex + 1)
+            ]
+
+            updatedTaskList[title] = [
+                ...updatedTaskList[title].slice(0, hoverIndex),
+                movedTask,
+                ...updatedTaskList[title].slice(hoverIndex)
+            ]
+
+            localStorage.setItem('task-manager', JSON.stringify(updatedTaskList))
+
+            return updatedTaskList
+        })
+    }, [])
+
+    const updateTask = useCallback((title: string, index: number, currTask: string) => {
+        setTaskList(prev => {
+            const updtPrev = JSON.parse(JSON.stringify(prev[title]))
+            updtPrev[index] = currTask
+            return { ...prev, [title]: updtPrev }
+        })
+        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
+        taskManager[title][index] = currTask
+        localStorage.setItem("task-manager", JSON.stringify(taskManager))
+    }, [])
+
+    const addTask = useCallback((title: string, start?: boolean) => {
+        let taskSize = -1
+        setTaskList(prev => {
+            const updtList = JSON.parse(JSON.stringify(prev))
+            updtList[title] = updtList[title] ? (start ? ['', ...updtList[title]] : [...updtList[title], '']) : ['']
+            taskSize = updtList[title].length - 1
+            localStorage.setItem("task-manager", JSON.stringify(updtList))
+            return updtList
+        })
+
+        setNewTask(start ? 0 : taskSize)
+
+    }, [])
+
+    return { newTask, setNewTask, updateListOnDrop, updateTask, addTask }
+
+};
