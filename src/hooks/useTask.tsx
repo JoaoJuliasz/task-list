@@ -2,9 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { Tasks } from "../types/Task.type";
 
 export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
-
     const [newTask, setNewTask] = useState<number>(-1)
-
 
     const updateListOnDrop = useCallback((prevTitle: string, title: string, taskIndex: number, hoverIndex: number) => {
         setTaskList(prev => {
@@ -57,6 +55,21 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
 
     }, [])
 
-    return { newTask, setNewTask, updateListOnDrop, updateTask, addTask }
+    const deleteOne = (title: string, index: number) => {
+        setTaskList(prev => {
+            prev[title].splice(index, 1)
+            localStorage.setItem("task-manager", JSON.stringify(prev))
+            return { ...prev }
+        })
+    }
+
+    const deleteAll = useCallback((title: string) => {
+        setTaskList(prev => ({ ...prev, [title]: [] }))
+        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
+        taskManager[title] = []
+        localStorage.setItem("task-manager", JSON.stringify(taskManager))
+    }, [])
+
+    return { newTask, setNewTask, updateListOnDrop, updateTask, addTask, deleteOne, deleteAll }
 
 };

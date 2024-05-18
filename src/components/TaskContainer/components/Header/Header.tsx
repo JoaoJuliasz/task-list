@@ -3,6 +3,7 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
 import style from './header.module.css'
 import { Tasks } from "../../../../types/Task.type";
+import { useTask } from "../../../../hooks/useTask";
 
 
 type Props = {
@@ -16,12 +17,9 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [headerTitle, setHeaderTitle] = useState<string>(title)
 
-    const handleDelete = () => {
-        setTaskList(prev => ({ ...prev, [title]: [] }))
-        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
-        taskManager[title] = []
-        localStorage.setItem("task-manager", JSON.stringify(taskManager))
-    }
+    const { deleteAll } = useTask(setTaskList)
+
+    const handleDelete = () => deleteAll(title)
 
     return (
         <div className={style.container}>

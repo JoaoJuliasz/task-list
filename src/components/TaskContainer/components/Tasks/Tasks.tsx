@@ -15,7 +15,6 @@ type Props = {
 }
 
 const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd }: Props) => {
-
     return (
         <div className={style.container}>
             {

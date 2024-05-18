@@ -8,6 +8,7 @@ import { Tasks } from "../../../../../../types/Task.type";
 
 import style from './menu.module.css'
 import homeStyle from '../../taskCard.module.css'
+import { useTask } from "../../../../../../hooks/useTask";
 
 
 type Props = {
@@ -19,19 +20,14 @@ type Props = {
 }
 
 const Menu = ({ title, index, currTask, setTaskList, handleEdit }: Props) => {
-
     const [isOpen, setOpen] = useState<boolean>(false);
     const { anchorProps, hoverProps } = useHover(isOpen, setOpen);
 
+    const { deleteOne } = useTask(setTaskList)
+
     const ref = useRef(null);
 
-    const handleDelete = () => {
-        setTaskList(prev => {
-            prev[title].splice(index, 1)
-            localStorage.setItem("task-manager", JSON.stringify(prev))
-            return { ...prev }
-        })
-    }
+    const handleDelete = () => deleteOne(title, index)
 
     const copyToClipboard = () => navigator.clipboard.writeText(currTask);
 
