@@ -1,9 +1,11 @@
 import Title from "../../components/Title/Title";
 import TaskList from "../Tasks/TaskList";
 
+import style from './home.module.css'
+
 const Home = () => {
     return (
-        <div style={{ width: '100%', display: "flex", flexDirection: 'column' }}>
+        <div className={style.container}>
             <Title />
             <TaskList />
         </div>

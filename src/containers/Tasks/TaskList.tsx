@@ -4,6 +4,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import TaskContainer from "../../components/TaskContainer/TaskContainer";
 import { Tasks } from "../../types/Task.type";
 
+import style from './taskList.module.css'
+
 const TaskList = () => {
     const [taskList, setTaskList] = useState<Tasks>({})
     const [tasksTitles, setTasksTitles] = useState<string[]>(["To Do", "Doing", "Done"])
@@ -26,7 +28,7 @@ const TaskList = () => {
     }, [])
 
     return (
-        <div style={{ width: '100%', display: "flex", justifyContent: 'space-around', margin: 20, cursor: 'grab' }}>
+        <div className={style.container}>
             <DndProvider backend={HTML5Backend}>
                 {
                     tasksTitles.map((title, index) =>

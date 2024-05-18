@@ -1,8 +1,12 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { useDrag, useDrop } from "react-dnd"
-import { Tasks as TasksType } from "../../types/Task.type"
+
 import Header from "./components/Header/Header"
 import Tasks from "./components/Tasks/Tasks"
+
+import { Tasks as TasksType } from "../../types/Task.type"
+
+import style from './taskContainer.module.css'
 
 type Props = {
     title: string
@@ -16,10 +20,13 @@ const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) =>
     const [newTask, setNewTask] = useState<number>(-1)
     const ref = useRef(null)
 
-    const [, drag] = useDrag({
-        type: "ITEM",
-        item: { type: "ITEM", index }
-    })
+    const [{ isDragging }, drag] = useDrag({
+        type: 'ITEM',
+        item: { type: "ITEM", index },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
 
     const [, drop] = useDrop({
         accept: "ITEM",
@@ -76,7 +83,7 @@ const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) =>
     }
 
     return (
-        <div ref={ref}>
+        <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
             <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={handleAdd} />
             <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={handleAdd}
                 newTask={newTask} setNewTask={setNewTask} handleDrop={handleDrop} />
