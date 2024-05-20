@@ -50,9 +50,7 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
             localStorage.setItem("task-manager", JSON.stringify(updtList))
             return updtList
         })
-
-        setNewTask(start ? 0 : taskSize)
-
+        setNewTask(prev => start ? 0 : taskSize)
     }, [])
 
     const deleteOne = (title: string, index: number) => {
