@@ -3,7 +3,7 @@ import Menu from "./components/Menu/Menu";
 import TaskInput from "./components/TaskInput/TaskInput";
 
 import { useTask } from "../../../../hooks/useTask";
-import {useDragNDrop} from "../../../../hooks/useDragNDrop";
+import { useDragNDrop } from "../../../../hooks/useDragNDrop";
 
 import { Tasks } from "../../../../types/Task.type";
 
@@ -25,8 +25,6 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
     const { updateTask, updateListOnDrop } = useTask(setTaskList)
 
     const dragRef = useRef<HTMLDivElement>(null);
-
-    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const hoverFn = (item: any) => {
         if (!dragRef.current) {
@@ -50,9 +48,7 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
 
     const handleEdit = (value: boolean) => {
         setEdit(value)
-        if (value) {
-            textAreaRef.current?.focus()
-        } else {
+        if (!value) {
             setNewTask(-1)
             // should update the state
             updateTask(title, index, currTask)
@@ -62,8 +58,13 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
     return (
         <div className={`${style.container} ${isDragging ? style.dragging : ''}`} onBlur={() => handleEdit(false)} ref={dragRef}>
             <div className={style.textContainer}>
-                <TaskInput currTask={currTask} textAreaRef={textAreaRef} validation={edit || newTask === index}
-                    setCurrTask={setCurrTask} handleEdit={handleEdit} />
+                {edit || newTask === index ?
+                    <TaskInput currTask={currTask} setCurrTask={setCurrTask} handleEdit={handleEdit} />
+                    :
+                    <div className={style.notEdit}>
+                        <span style={{ opacity: !currTask ? 0.4 : 1 }}>{currTask || 'untitled'}</span>
+                    </div>
+                }
 
                 {!edit || newTask !== index ?
                     <Menu title={title} index={index} currTask={currTask} setTaskList={setTaskList} handleEdit={handleEdit} />
