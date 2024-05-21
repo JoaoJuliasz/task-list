@@ -62,10 +62,12 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
     }
 
     const deleteAll = useCallback((title: string) => {
-        setTaskList(prev => ({ ...prev, [title]: [] }))
-        const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
-        taskManager[title] = []
-        localStorage.setItem("task-manager", JSON.stringify(taskManager))
+        if (window.confirm(`Are you sure you want to remove all tasks from "${title}"?`)) {
+            setTaskList(prev => ({ ...prev, [title]: [] }))
+            const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
+            taskManager[title] = []
+            localStorage.setItem("task-manager", JSON.stringify(taskManager))
+        }
     }, [])
 
     return { newTask, setNewTask, updateListOnDrop, updateTask, addTask, deleteOne, deleteAll }
