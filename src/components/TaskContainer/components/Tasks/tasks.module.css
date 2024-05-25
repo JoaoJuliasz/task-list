@@ -1,5 +1,6 @@
 .container {
     width: 260px;
+    position: relative;
 }
 
 .container .new {

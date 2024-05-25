@@ -14,11 +14,12 @@ type Props = {
     task: string
     index: number
     newTask: number
+    empty?: boolean
     setTaskList: Dispatch<SetStateAction<Tasks>>
     setNewTask: Dispatch<SetStateAction<number>>
 }
 
-const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Props) => {
+const TaskCard = ({ title, task, index, newTask, empty, setTaskList, setNewTask }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [currTask, setCurrTask] = useState<string>(task)
 
@@ -54,6 +55,9 @@ const TaskCard = ({ title, task, index, newTask, setTaskList, setNewTask }: Prop
             updateTask(title, index, currTask)
         }
     }
+
+    if (empty) return <div className={style.empty}
+        ref={dragRef}></div>
 
     return (
         <div className={`${style.container} ${isDragging ? style.dragging : ''}`} onBlur={() => handleEdit(false)} ref={dragRef}>

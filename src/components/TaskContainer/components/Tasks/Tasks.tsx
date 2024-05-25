@@ -18,10 +18,15 @@ const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd }:
     return (
         <div className={style.container}>
             {
-                taskList?.map((task, index) => <TaskCard key={task + title + index}
-                    title={title} task={task}
-                    index={index} setTaskList={setTaskList} newTask={newTask}
-                    setNewTask={setNewTask} />)
+                taskList?.length > 0 ?
+                    taskList?.map((task, index) => <TaskCard key={task + title + index}
+                        title={title} task={task}
+                        index={index} setTaskList={setTaskList} newTask={newTask}
+                        setNewTask={setNewTask} />)
+                    :
+                    <TaskCard title={title} task={""} empty={true}
+                        index={0} setTaskList={setTaskList} newTask={newTask}
+                        setNewTask={setNewTask} />
             }
             <div className={style.new} onClick={() => handleAdd(title)}>
                 <span className={style.text}>

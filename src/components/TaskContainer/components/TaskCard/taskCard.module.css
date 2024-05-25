@@ -43,7 +43,16 @@
     cursor: grabbing !important;
 }
 
-.container:hover .textContainer > .actions {
+.container:hover .textContainer>.actions {
     opacity: 1 !important;
     transition: 0.3s opacity;
+}
+
+.empty {
+    max-width: 100%;
+    min-height: 16px;
+    height: 0;
+    position: absolute;
+    width: 260px;
+    top: -10px;
 }
