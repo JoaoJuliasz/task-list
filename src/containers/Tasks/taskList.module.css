@@ -1,8 +1,30 @@
 .container {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
     margin-top: 10px;
     border-top: 1px solid #3f3f3f;
     padding: 20px 0;
+    width: 100%;
+}
+
+.container .wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .add {
+    /* padding-left: 20px; */
+    width: 100px;
+    text-align: end;
+}
+
+.container .add span {
+    padding: 6px 8px;
+    transition: background 0.1s;
+}
+
+.container .add span:hover {
+    background: #ffffff0e;
+    border-radius: 3px;
+    cursor: pointer;
 }

@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -32,6 +33,13 @@ const TaskList = ({ search }: Props) => {
         localStorage.setItem('tasksTitles', JSON.stringify(newItems))
     };
 
+    const handleClick = () => {
+        const value: string = prompt("Insert new column's title") || ""
+        setTaskList(prev => ({...prev, [value]: []}))
+        setTasksTitles(prev => ([...prev, value]))
+        //TODO: need to add it to local storage
+    }
+
     useEffect(() => {
         const taskManager = JSON.parse(localStorage.getItem('task-manager') || "{}")
         setTaskList(taskManager)
@@ -43,14 +51,19 @@ const TaskList = ({ search }: Props) => {
 
     return (
         <div className={style.container}>
-            <DndProvider backend={HTML5Backend}>
-                {
-                    tasksTitles.map((title, index) =>
-                        <TaskContainer key={title + index} title={title}
-                            tasks={filteredItems[title]} index={index} setTaskList={setTaskList} moveItem={moveItem} />
-                    )
-                }
-            </DndProvider>
+            <div className={style.wrapper}>
+                <DndProvider backend={HTML5Backend}>
+                    {
+                        tasksTitles.map((title, index) =>
+                            <TaskContainer key={title + index} title={title}
+                                tasks={filteredItems[title]} index={index} setTaskList={setTaskList} moveItem={moveItem} />
+                        )
+                    }
+                </DndProvider>
+            </div>
+            <div className={style.add}>
+                <PlusOutlined onClick={handleClick}/>
+            </div>
         </div>
 
     );
