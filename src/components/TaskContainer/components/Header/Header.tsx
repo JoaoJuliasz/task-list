@@ -1,9 +1,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
 import style from './header.module.css'
 import { Tasks } from "../../../../types/Task.type";
-import { useTask } from "../../../../hooks/useTask";
+import Menu from "./components/Menu/Menu";
 
 
 type Props = {
@@ -11,15 +10,12 @@ type Props = {
     taskList: string[]
     handleAdd: (title: string, start?: boolean | undefined) => void
     setTaskList: Dispatch<SetStateAction<Tasks>>
+    setTasksTitles: Dispatch<SetStateAction<string[]>>
 }
 
-const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
+const Header = ({ title, taskList, handleAdd, setTaskList, setTasksTitles }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [headerTitle, setHeaderTitle] = useState<string>(title)
-
-    const { deleteAll } = useTask(setTaskList)
-
-    const handleDelete = () => deleteAll(title)
 
     return (
         <div className={style.container}>
@@ -34,8 +30,7 @@ const Header = ({ title, taskList, handleAdd, setTaskList }: Props) => {
                 {!edit ? <span className={style.count}>{taskList?.length}</span> : null}
             </div>
             <div className={style.optionsContainer}>
-                <PlusOutlined onClick={() => handleAdd(title, true)} />
-                <DeleteOutlined onClick={handleDelete} />
+                <Menu title={title} setTaskList={setTaskList} handleAdd={handleAdd} setTasksTitles={setTasksTitles} />
             </div>
         </div>
     );

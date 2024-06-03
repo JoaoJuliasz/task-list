@@ -35,9 +35,16 @@ const TaskList = ({ search }: Props) => {
 
     const handleClick = () => {
         const value: string = prompt("Insert new column's title") || ""
-        setTaskList(prev => ({...prev, [value]: []}))
-        setTasksTitles(prev => ([...prev, value]))
-        //TODO: need to add it to local storage
+        if (!tasksTitles.includes(value)) {
+            setTaskList(prev => ({ ...prev, [value]: [] }))
+            setTasksTitles(prev => {
+                const newTitles = [...prev, value]
+                localStorage.setItem('tasksTitles', JSON.stringify(newTitles))
+                return newTitles
+            })
+        } else {
+            alert("Column with this title already exists!")
+        }
     }
 
     useEffect(() => {
@@ -56,13 +63,13 @@ const TaskList = ({ search }: Props) => {
                     {
                         tasksTitles.map((title, index) =>
                             <TaskContainer key={title + index} title={title}
-                                tasks={filteredItems[title]} index={index} setTaskList={setTaskList} moveItem={moveItem} />
+                                tasks={filteredItems[title]} index={index} setTaskList={setTaskList} moveItem={moveItem} setTasksTitles={setTasksTitles} />
                         )
                     }
                 </DndProvider>
             </div>
             <div className={style.add}>
-                <PlusOutlined onClick={handleClick}/>
+                <PlusOutlined onClick={handleClick} />
             </div>
         </div>
 

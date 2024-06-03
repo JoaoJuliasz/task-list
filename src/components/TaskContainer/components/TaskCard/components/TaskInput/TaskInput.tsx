@@ -1,8 +1,8 @@
-import { ChangeEvent, Dispatch, KeyboardEvent, MutableRefObject, SetStateAction, useEffect, useRef } from "react";
+import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef } from "react";
+
 import ReactTextareaAutosize from "react-textarea-autosize";
 
 import style from '../../taskCard.module.css'
-
 
 type Props = {
     currTask: string

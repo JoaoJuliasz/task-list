@@ -1,0 +1,36 @@
+.container .openMenu.isOpen{
+    background: #3e3d3dfa;
+}
+
+.container .openMenu {
+    border-radius: 0 3px 3px 0;
+}
+
+.container .openMenu {
+    cursor: pointer;
+    color: #fff;
+    padding: 2px 7px;
+    font-size: 14px;
+}
+
+.container .openMenu:hover {
+    background: #3e3d3dfa;
+    transition: 0.3s background;
+}
+
+.container .menu {
+    background: #252525;
+}
+
+.container .menu .item {
+    color: #fff;
+}
+
+.container .menu .itemHover {
+    background: #ffffff0e !important;
+    color: #fff;
+}
+
+.container .menu .item span{
+    margin-right: 5px;
+}

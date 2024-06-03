@@ -17,9 +17,10 @@ type Props = {
     index: number
     setTaskList: Dispatch<SetStateAction<TasksType>>
     moveItem: (dragIndex: number, hoverIndex: number) => void
+    setTasksTitles: Dispatch<SetStateAction<string[]>>
 }
 
-const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) => {
+const TaskContainer = ({ title, tasks, index, setTaskList, setTasksTitles, moveItem }: Props) => {
     const { newTask, setNewTask, addTask } = useTask(setTaskList)
 
     const ref = useRef<HTMLDivElement>(null)
@@ -42,7 +43,7 @@ const TaskContainer = ({ title, tasks, index, setTaskList, moveItem }: Props) =>
 
     return (
         <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
-            <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} />
+            <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} setTasksTitles={setTasksTitles}/>
             <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask}
                 newTask={newTask} setNewTask={setNewTask} />
         </div>

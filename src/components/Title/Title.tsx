@@ -1,4 +1,3 @@
-import { SearchOutlined } from "@ant-design/icons";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import SearchTasks from "./components/SearchTasks/SearchTasks";
 import style from "./title.module.css"

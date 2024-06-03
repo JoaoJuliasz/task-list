@@ -1,9 +1,7 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { CopyOutlined, DashOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons"; ''
+import { CopyOutlined, DashOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import { ControlledMenu, MenuItem, useHover } from "@szhsin/react-menu";
-import '@szhsin/react-menu/dist/index.css';
-import '@szhsin/react-menu/dist/transitions/slide.css';
 import { Tasks } from "../../../../../../types/Task.type";
 
 import style from './menu.module.css'
