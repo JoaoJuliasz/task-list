@@ -4,12 +4,15 @@ import { ControlledMenu, MenuItem, useHover } from "@szhsin/react-menu";
 import { DashOutlined } from "@ant-design/icons";
 
 import style from './menu.module.css'
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css';
 
 type Props = {
     children: ReactNode[]
+    task ?: boolean
 }
 
-const Menu = ({ children }: Props) => {
+const Menu = ({ children, task }: Props) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const { anchorProps, hoverProps } = useHover(isOpen, setOpen);
 
@@ -17,7 +20,7 @@ const Menu = ({ children }: Props) => {
 
     return (
         <div className={style.container}>
-            <div className={`${style.openMenu} ${isOpen ? style.isOpen : ''}`} ref={ref} {...anchorProps}>
+            <div className={`${style.openMenu} ${isOpen ? style.isOpen : ''} ${task ? style.isTask : ''}`} ref={ref} {...anchorProps}>
                 <DashOutlined />
             </div>
             <ControlledMenu
