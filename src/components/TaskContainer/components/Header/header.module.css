@@ -39,6 +39,10 @@
     opacity: 0;
 }
 
+.container .optionsContainer.noOpacity {
+    opacity: 1;
+}
+
 .container:hover .optionsContainer {
     opacity: 1;
     transition: 0.3s opacity;

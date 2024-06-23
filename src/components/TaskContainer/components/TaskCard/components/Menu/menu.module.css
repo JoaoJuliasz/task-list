@@ -6,6 +6,10 @@
     opacity: 0;
 }
 
+.container.noOpacity {
+    opacity: 1;
+}
+
 .container .edit {
     border-radius: 3px 0 0 3px;
     border-right: 1px solid #909090;

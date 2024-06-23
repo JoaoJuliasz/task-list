@@ -1,5 +1,6 @@
 .container {
     cursor: grab;
+    margin: 0 10px;
 }
 
 .grabbing {

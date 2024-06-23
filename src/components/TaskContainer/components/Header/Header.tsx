@@ -15,6 +15,7 @@ type Props = {
 
 const Header = ({ title, taskList, handleAdd, setTaskList, setTasksTitles }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
     const [headerTitle, setHeaderTitle] = useState<string>(title)
 
     return (
@@ -29,8 +30,9 @@ const Header = ({ title, taskList, handleAdd, setTaskList, setTasksTitles }: Pro
                     <h5 className={style.title} onClick={() => setEdit(true)}>{headerTitle}</h5>}
                 {!edit ? <span className={style.count}>{taskList?.length}</span> : null}
             </div>
-            <div className={style.optionsContainer}>
-                <Menu title={title} setTaskList={setTaskList} handleAdd={handleAdd} setTasksTitles={setTasksTitles} />
+            <div className={`${style.optionsContainer} ${isOpen ? style.noOpacity : ''}`}>
+                <Menu title={title} setTaskList={setTaskList} handleAdd={handleAdd} setTasksTitles={setTasksTitles}
+                    isOpen={isOpen} setIsOpen={setIsOpen} />
             </div>
         </div>
     );

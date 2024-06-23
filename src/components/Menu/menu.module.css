@@ -2,12 +2,13 @@
     background: #3e3d3dfa;
 }
 
-.container .openMenu {
+.container .openMenu,
+:global(.ant-dropdown-menu) {
     cursor: pointer;
     color: #fff;
-    padding: 2px 7px;
+    padding: 2px 7px !important;
     font-size: 14px;
-    border-radius: 3px;
+    border-radius: 3px !important;
 }
 
 .container .openMenu.isTask {

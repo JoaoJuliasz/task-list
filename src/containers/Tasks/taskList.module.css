@@ -10,10 +10,12 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    overflow-x: auto;
+    height: 100%;
+    min-height: 400px;
 }
 
 .container .add {
-    /* padding-left: 20px; */
     width: 100px;
     text-align: end;
 }

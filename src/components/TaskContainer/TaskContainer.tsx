@@ -40,7 +40,6 @@ const TaskContainer = ({ title, tasks, index, setTaskList, setTasksTitles, moveI
 
     const { isDragging } = useDragNDrop('ITEM', ref, { type: "ITEM", index }, hoverFn)
 
-
     return (
         <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
             <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} setTasksTitles={setTasksTitles}/>

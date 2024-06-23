@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import MenuComponent from '../../../../../Menu/Menu'
@@ -8,6 +8,7 @@ import { Tasks } from "../../../../../../types/Task.type";
 import style from './menu.module.css'
 import homeStyle from '../../taskCard.module.css'
 import { useTask } from "../../../../../../hooks/useTask";
+import { MenuProps } from "antd";
 
 
 type Props = {
@@ -19,6 +20,7 @@ type Props = {
 }
 
 const Menu = ({ title, index, currTask, setTaskList, handleEdit }: Props) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const { deleteOne } = useTask(setTaskList)
 
@@ -27,14 +29,14 @@ const Menu = ({ title, index, currTask, setTaskList, handleEdit }: Props) => {
     const copyToClipboard = () => navigator.clipboard.writeText(currTask);
 
     return (
-        <div className={`${style.container} ${homeStyle.actions}`}>
+        <div className={`${style.container} ${homeStyle.actions} ${isOpen ? style.noOpacity : ''}`}>
             <a className={style.edit} onClick={() => handleEdit(true)}>
                 <EditOutlined />
             </a>
-            <MenuComponent children={[
-                <div onClick={copyToClipboard}><CopyOutlined /> Copy</div>,
-                <div onClick={handleDelete}><DeleteOutlined /> Remove</div>
-            ]} task={true} />
+            <MenuComponent items={[
+                { key: '1', label: (<div onClick={copyToClipboard}>Copy</div>), itemIcon: <CopyOutlined /> },
+                { key: '2', label: (<div onClick={handleDelete}>Remove</div>), itemIcon: <DeleteOutlined /> }
+            ] as MenuProps['items']} isOpen={isOpen} setIsOpen={setIsOpen} />
 
         </div>
     );
