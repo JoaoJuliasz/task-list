@@ -1,0 +1,10 @@
+.titleWrapper {
+    margin: 0 10px 0 0;
+    padding: 4px;
+    border-radius: 3px;
+}
+
+.titleWrapper:hover {
+    background: #f4f2f219;
+    transition: background 0.3s;
+}   

@@ -57,7 +57,6 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
         setTaskList(prev => {
             const updt = JSON.parse(JSON.stringify(prev))
             updt[title].splice(index, 1)
-            console.warn(updt[title])
             localStorage.setItem("task-manager", JSON.stringify(updt))
             return { ...updt }
         })

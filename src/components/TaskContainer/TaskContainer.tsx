@@ -42,7 +42,7 @@ const TaskContainer = ({ title, tasks, index, setTaskList, setTasksTitles, moveI
 
     return (
         <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
-            <Header title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} setTasksTitles={setTasksTitles}/>
+            <Header index={index} title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} setTasksTitles={setTasksTitles}/>
             <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask}
                 newTask={newTask} setNewTask={setNewTask} />
         </div>

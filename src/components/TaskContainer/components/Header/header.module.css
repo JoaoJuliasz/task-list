@@ -21,7 +21,7 @@
     background: #6e3630;
     margin: 0 10px 0 0;
     border-radius: 3px;
-    cursor: text;
+    cursor: pointer;
 }
 
 .container .titleContainer .updateTitle {
