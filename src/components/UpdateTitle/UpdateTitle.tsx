@@ -1,7 +1,7 @@
 import { Dropdown } from "antd";
 import { Dispatch, SetStateAction } from "react";
 import { Tasks } from "../../types/Task.type";
-import UpdateTitleInput from "./components/UpdateTitleInput/UpdateTitleInput";
+import UpdateTitleInput from "../UpdateTitleInput/UpdateTitleInput";
 import style from './updateTitle.module.css'
 
 type Props = {
@@ -14,8 +14,24 @@ type Props = {
 
 const UpdateTitle = ({ index, currTitle, titleClassName, setTasksTitles, setTaskList }: Props) => {
 
+    const handleClick = (title: string) => {
+        setTasksTitles(prev => {
+            const updtPrev = JSON.parse(JSON.stringify(prev))
+            updtPrev[index] = title
+            localStorage.setItem('tasksTitles', JSON.stringify(updtPrev))
+            return updtPrev
+        })
+        setTaskList(prev => {
+            const updtPrev = JSON.parse(JSON.stringify(prev))
+            updtPrev[title] = updtPrev[currTitle]
+            delete updtPrev[currTitle]
+            localStorage.setItem('task-manager', JSON.stringify(updtPrev))
+            return updtPrev
+        })
+    }
+
     const renderDropdown = () => (
-        <UpdateTitleInput index={index} title={currTitle} setTasksTitles={setTasksTitles} setTaskList={setTaskList} />
+        <UpdateTitleInput value={currTitle} handleClick={handleClick} />
     )
 
     return (

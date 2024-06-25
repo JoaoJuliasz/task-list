@@ -23,7 +23,7 @@ const Header = ({ index, title, taskList, handleAdd, setTaskList, setTasksTitles
             <div className={style.titleContainer}>
                 <UpdateTitle index={index} currTitle={title} titleClassName={style.title} setTasksTitles={setTasksTitles}
                     setTaskList={setTaskList} />
-                <span className={style.count}>{taskList?.length}</span>
+                <span className={style.count}>{taskList?.length ?? 0}</span>
             </div>
             <div className={`${style.optionsContainer} ${isOpen ? style.noOpacity : ''}`}>
                 <Menu title={title} setTaskList={setTaskList} handleAdd={handleAdd} setTasksTitles={setTasksTitles}
