@@ -6,24 +6,19 @@
     align-items: center;
 }
 
-.container .titleChange {
-    font-size: 18px;
-    border: none;
-    background: transparent;
-    outline: none;
-    text-align: center;
-    font-weight: bold;
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    color: #ffffffde;
-    padding: 0;
-    margin: 0;
-    text-align: start;
-    line-height: 1.5;
-}
-
 .container .title {
     margin: 0;
     cursor: text;
     font-size: 18px;
+    outline: none;
+    direction: ltr;
+}
 
+.container .title[contentEditable="true"] {
+    direction: ltr;
+}
+
+.container .title:empty:before {
+    content: attr(data-text);
+    -webkit-text-fill-color: rgb(55, 55, 55);
 }

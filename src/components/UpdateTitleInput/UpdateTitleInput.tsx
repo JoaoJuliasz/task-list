@@ -4,11 +4,12 @@ import style from './updateTitleInput.module.css'
 
 type Props = {
     value: string
+    placeholder?: string
     handleClick: (value: string) => void
 }
 
 
-const UpdateTitleInput = ({ value, handleClick }: Props) => {
+const UpdateTitleInput = ({ value, placeholder, handleClick }: Props) => {
     const [currValue, setCurrValue] = useState<string>(value)
 
     const inputRef = useRef<HTMLInputElement>()
@@ -23,7 +24,7 @@ const UpdateTitleInput = ({ value, handleClick }: Props) => {
 
     return (
         <div className={style.container}>
-            <Input className={style.input} value={currValue} ref={inputRef} onChange={handleChange} />
+            <Input className={style.input} value={currValue} ref={inputRef} onChange={handleChange} placeholder={placeholder}/>
             <Button className={style.button} onClick={() => handleClick(currValue)} size="small">Done</Button>
         </div>
     );

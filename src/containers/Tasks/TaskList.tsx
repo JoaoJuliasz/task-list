@@ -62,7 +62,7 @@ const TaskList = ({ search }: Props) => {
     }
 
     const renderDropdown = () => (
-        <UpdateTitleInput value="" handleClick={handleClick} />
+        <UpdateTitleInput value="" handleClick={handleClick} placeholder="New column"/>
     )
 
     useEffect(() => {

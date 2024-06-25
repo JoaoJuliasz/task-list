@@ -1,33 +1,45 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import SearchTasks from "./components/SearchTasks/SearchTasks";
-import style from "./title.module.css"
+import style from "./title.module.css";
 
 type Props = {
-    search: string
-    setSearch: Dispatch<SetStateAction<string>>
-}
+    search: string;
+    setSearch: Dispatch<SetStateAction<string>>;
+};
 
 const Title = ({ search, setSearch }: Props) => {
-    const [title, setTitle] = useState<string>("Task Manager")
-    const [editTitle, setEditTitle] = useState<boolean>(false)
+    const [title, setTitle] = useState<string>("");
 
-    const handleClick = (value: boolean) => {
-        setEditTitle(value)
-    }
+    const titleRef = useRef<HTMLHeadingElement>(null);
 
-    const handleChange = (element: ChangeEvent<HTMLInputElement>) => {
-        setTitle(element.target.value)
-    }
+    const handleChange = (event: ChangeEvent<HTMLHeadingElement>) => {
+        const value = event.target.textContent || "";
+        setTitle(value);
+        localStorage.setItem("task-manager-title", value);
+    };
+
+    useEffect(() => {
+        const storageTitle = localStorage.getItem("task-manager-title") || "";
+        setTitle(storageTitle);
+    }, []);
+
+
+    useEffect(() => {
+        if (titleRef.current) {
+            titleRef.current.textContent = title;
+        }
+    }, [title]);
 
     return (
         <div className={style.container}>
-            {editTitle ?
-                <input value={title} className={style.titleChange}
-                    onChange={handleChange} autoFocus
-                    onBlur={() => title && handleClick(false)} placeholder="Untitled" />
-                :
-                <h3 className={style.title} onClick={() => handleClick(true)}>{title}</h3>
-            }
+            <h3
+                ref={titleRef}
+                className={style.title}
+                dir="ltr"
+                contentEditable={true}
+                onInput={handleChange}
+                data-text="Untitled"
+            />
             <SearchTasks search={search} setSearch={setSearch} />
         </div>
     );
