@@ -3,11 +3,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import TaskCard from "../TaskCard/TaskCard";
 
 import style from './tasks.module.css';
-import { Tasks as TasksType } from "../../../../types/Task.type";
+import { Task, Tasks as TasksType } from "../../../../types/Task.type";
 
 type Props = {
     title: string
-    taskList: string[]
+    taskList: Task[]
     newTask: number
     setTaskList: Dispatch<SetStateAction<TasksType>>
     setNewTask: Dispatch<SetStateAction<number>>
@@ -24,7 +24,7 @@ const Tasks = ({ title, taskList, newTask, setNewTask, setTaskList, handleAdd }:
                         index={index} setTaskList={setTaskList} newTask={newTask}
                         setNewTask={setNewTask} />)
                     :
-                    <TaskCard title={title} task={""} empty={true}
+                    <TaskCard title={title} task={{} as Task} empty={true}
                         index={0} setTaskList={setTaskList} newTask={newTask}
                         setNewTask={setNewTask} />
             }

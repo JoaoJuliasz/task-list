@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { Tasks } from "../types/Task.type";
+import { Task, Tasks } from "../types/Task.type";
+
+const emptyTask: Task = { name: '', type: 'simple' }
 
 export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
     const [newTask, setNewTask] = useState<number>(-1)
@@ -30,7 +32,7 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
         })
     }, [])
 
-    const updateTask = useCallback((title: string, index: number, currTask: string) => {
+    const updateTask = useCallback((title: string, index: number, currTask: Task) => {
         setTaskList(prev => {
             const updtPrev = JSON.parse(JSON.stringify(prev[title]))
             updtPrev[index] = currTask
@@ -44,8 +46,9 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
     const addTask = useCallback((title: string, start?: boolean) => {
         let taskSize = -1
         setTaskList(prev => {
-            const updtList = JSON.parse(JSON.stringify(prev))
-            updtList[title] = updtList[title] ? (start ? ['', ...updtList[title]] : [...updtList[title], '']) : ['']
+            const updtList: Tasks = JSON.parse(JSON.stringify(prev))
+            updtList[title] = updtList[title] ?
+                (start ? [emptyTask, ...updtList[title]] : [...updtList[title], emptyTask]) : [emptyTask]
             taskSize = updtList[title].length - 1
             localStorage.setItem("task-manager", JSON.stringify(updtList))
             return updtList

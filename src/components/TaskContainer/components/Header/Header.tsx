@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
 import style from './header.module.css'
-import { Tasks } from "../../../../types/Task.type";
+import { Task, Tasks } from "../../../../types/Task.type";
 import Menu from "./components/Menu/Menu";
 import UpdateTitle from "../../../UpdateTitle/UpdateTitle";
 
@@ -9,7 +9,7 @@ import UpdateTitle from "../../../UpdateTitle/UpdateTitle";
 type Props = {
     index: number
     title: string
-    taskList: string[]
+    taskList: Task[]
     handleAdd: (title: string, start?: boolean | undefined) => void
     setTaskList: Dispatch<SetStateAction<Tasks>>
     setTasksTitles: Dispatch<SetStateAction<string[]>>

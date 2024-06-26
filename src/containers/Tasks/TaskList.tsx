@@ -19,14 +19,13 @@ const TaskList = ({ search }: Props) => {
     const [tasksTitles, setTasksTitles] = useState<string[]>(["To Do", "Doing", "Done"])
     const [open, setOpen] = useState<boolean>(false)
 
-
     const { contextHolder, displayMessage } = useMessage()
 
     const filteredItems = useMemo(() => {
         const result: Tasks = JSON.parse(JSON.stringify(taskList))
         tasksTitles.forEach(title => {
             if (result[title]) {
-                result[title] = result[title].filter(item => item.toLowerCase().includes(search.toLowerCase()))
+                result[title] = result[title].filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
             }
         })
         return result

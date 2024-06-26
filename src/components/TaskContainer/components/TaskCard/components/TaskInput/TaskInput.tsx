@@ -1,12 +1,13 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef } from "react";
 
 import ReactTextareaAutosize from "react-textarea-autosize";
+import { Task } from "../../../../../../types/Task.type";
 
 import style from '../../taskCard.module.css'
 
 type Props = {
-    currTask: string
-    setCurrTask: Dispatch<SetStateAction<string>>
+    currTask: Task
+    setCurrTask: Dispatch<SetStateAction<Task>>
     handleEdit: (value: boolean) => void
 }
 
@@ -15,8 +16,8 @@ const TaskInput = ({ currTask, setCurrTask, handleEdit }: Props) => {
 
 
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const value = e.target.value
-        setCurrTask(value)
+        const name = e.target.value
+        setCurrTask(prev => ({...prev, name}))
     }
 
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -35,7 +36,7 @@ const TaskInput = ({ currTask, setCurrTask, handleEdit }: Props) => {
     }, []);
 
     return <ReactTextareaAutosize className={style.text}
-        value={currTask}
+        value={currTask.name}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         ref={textareaRef}

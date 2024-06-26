@@ -5,13 +5,13 @@ import TaskInput from "./components/TaskInput/TaskInput";
 import { useTask } from "../../../../hooks/useTask";
 import { useDragNDrop } from "../../../../hooks/useDragNDrop";
 
-import { Tasks } from "../../../../types/Task.type";
+import { Task, Tasks } from "../../../../types/Task.type";
 
 import style from './taskCard.module.css'
 
 type Props = {
     title: string
-    task: string
+    task: Task
     index: number
     newTask: number
     empty?: boolean
@@ -21,7 +21,7 @@ type Props = {
 
 const TaskCard = ({ title, task, index, newTask, empty, setTaskList, setNewTask }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
-    const [currTask, setCurrTask] = useState<string>(task)
+    const [currTask, setCurrTask] = useState<Task>(task)
 
     const { updateTask, updateListOnDrop } = useTask(setTaskList)
 
@@ -66,7 +66,7 @@ const TaskCard = ({ title, task, index, newTask, empty, setTaskList, setNewTask 
                     <TaskInput currTask={currTask} setCurrTask={setCurrTask} handleEdit={handleEdit} />
                     :
                     <div className={style.notEdit}>
-                        <span style={{ opacity: !currTask ? 0.4 : 1 }}>{currTask || 'untitled'}</span>
+                        <span style={{ opacity: !currTask ? 0.4 : 1 }}>{currTask.name || 'untitled'}</span>
                     </div>
                 }
 

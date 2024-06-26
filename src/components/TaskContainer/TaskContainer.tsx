@@ -6,14 +6,14 @@ import Tasks from "./components/Tasks/Tasks"
 import { useTask } from "../../hooks/useTask"
 import { useDragNDrop } from "../../hooks/useDragNDrop"
 
-import { Tasks as TasksType } from "../../types/Task.type"
+import { Tasks as TasksType, Task } from "../../types/Task.type"
 
 import style from './taskContainer.module.css'
 import { Item } from "../../types/DragNDrop.type"
 
 type Props = {
     title: string
-    tasks: string[]
+    tasks: Task[]
     index: number
     setTaskList: Dispatch<SetStateAction<TasksType>>
     moveItem: (dragIndex: number, hoverIndex: number) => void
@@ -42,7 +42,7 @@ const TaskContainer = ({ title, tasks, index, setTaskList, setTasksTitles, moveI
 
     return (
         <div ref={ref} className={`${style.container} ${isDragging ? style.grabbing : ''}`}>
-            <Header index={index} title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} setTasksTitles={setTasksTitles}/>
+            <Header index={index} title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask} setTasksTitles={setTasksTitles} />
             <Tasks title={title} taskList={tasks} setTaskList={setTaskList} handleAdd={addTask}
                 newTask={newTask} setNewTask={setNewTask} />
         </div>
