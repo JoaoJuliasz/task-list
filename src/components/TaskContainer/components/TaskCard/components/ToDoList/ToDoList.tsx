@@ -1,6 +1,7 @@
 import { Button, Input, List } from "antd";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Todo } from "../../../../../../types/Task.type";
+import ToDoItem from "./component/ToDoItem/ToDoItem";
 
 type Props = {
     todoList: Todo[]
@@ -22,7 +23,7 @@ const ToDoList = ({ todoList, setTaskTodoList }: Props) => {
         })
         setItem("")
     }
-    
+
     return (
         <div>
             <div style={{ display: 'flex' }}>
@@ -32,11 +33,7 @@ const ToDoList = ({ todoList, setTaskTodoList }: Props) => {
             <List
                 itemLayout="horizontal"
                 dataSource={todoList}
-                renderItem={(todo) => (
-                    <List.Item>
-                        {todo.item}
-                    </List.Item>
-                )}
+                renderItem={(todo, index) => <ToDoItem todo={todo} index={index} setTaskTodoList={setTaskTodoList} />}
             />
         </div >
     );
