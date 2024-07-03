@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { CopyOutlined, DeleteOutlined, EditOutlined, OrderedListOutlined } from "@ant-design/icons";
 
 import MenuComponent from '../../../../../Menu/Menu'
@@ -8,29 +8,43 @@ import { Task, Tasks, Todo } from "../../../../../../types/Task.type";
 import style from './menu.module.css'
 import homeStyle from '../../taskCard.module.css'
 import { useTask } from "../../../../../../hooks/useTask";
-import { MenuProps, Modal, ModalFuncProps } from "antd";
+import { MenuProps, Modal } from "antd";
 import ToDoList from "../ToDoList/ToDoList";
+import { useTaskListContext } from "../../../../../../hooks/useTaskListContext";
 
 
 type Props = {
     title: string
     index: number
     currTask: Task
-    setTaskList: Dispatch<SetStateAction<Tasks>>
     handleEdit: (value: boolean) => void
 }
 
-const Menu = ({ title, index, currTask, setTaskList, handleEdit }: Props) => {
+const Menu = ({ title, index, currTask, handleEdit }: Props) => {
     const [taskTodoList, setTaskTodoList] = useState<Todo[]>(currTask.list ?? [])
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-    const { deleteOne } = useTask(setTaskList)
+    const { setTaskList } = useTaskListContext()
+
+    const { deleteOne } = useTask()
 
     const handleDelete = () => deleteOne(title, index)
 
     const handleTodoList = () => {
         setModalOpen(true)
+    }
+
+    const handleOnOkTodoList = () => {
+        setTaskList(prev => {
+            const updtPrev: Tasks = JSON.parse(JSON.stringify(prev))
+            updtPrev[title][index].type = 'todo'
+            updtPrev[title][index].list = taskTodoList
+            localStorage.setItem('task-manager', JSON.stringify(updtPrev))
+            console.warn({ updtPrev })
+            return updtPrev
+        })
+        setModalOpen(false)
     }
 
     const copyToClipboard = () => navigator.clipboard.writeText(currTask.name);
@@ -48,6 +62,7 @@ const Menu = ({ title, index, currTask, setTaskList, handleEdit }: Props) => {
             <Modal
                 title="To Do Items"
                 open={modalOpen}
+                onOk={handleOnOkTodoList}
             >
                 <ToDoList todoList={taskTodoList} setTaskTodoList={setTaskTodoList} />
             </Modal>

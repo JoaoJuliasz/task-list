@@ -4,24 +4,21 @@ import { PlusOutlined, DeleteOutlined, ClearOutlined } from "@ant-design/icons";
 import MenuComponent from '../../../../../Menu/Menu'
 
 import { useTask } from '../../../../../../hooks/useTask';
-import { Tasks } from '../../../../../../types/Task.type';
 import { MenuProps, Modal, ModalFuncProps } from 'antd';
 
 import style from './menu.module.css'
-
 type Props = {
     title: string
-    setTaskList: Dispatch<SetStateAction<Tasks>>
     handleAdd: (title: string, start?: boolean | undefined) => void
     setTasksTitles: Dispatch<SetStateAction<string[]>>
     isOpen: boolean
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const Menu = ({ title, setTaskList, handleAdd, setTasksTitles, isOpen, setIsOpen }: Props) => {
+const Menu = ({ title, handleAdd, setTasksTitles, isOpen, setIsOpen }: Props) => {
     const [modal, contextHolder] = Modal.useModal();
 
-    const { deleteAll } = useTask(setTaskList)
+    const { deleteAll } = useTask()
 
     const handleClear = () => deleteAll(title)
 

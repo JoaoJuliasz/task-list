@@ -5,7 +5,7 @@ import TaskInput from "./components/TaskInput/TaskInput";
 import { useTask } from "../../../../hooks/useTask";
 import { useDragNDrop } from "../../../../hooks/useDragNDrop";
 
-import { Task, Tasks } from "../../../../types/Task.type";
+import { Task } from "../../../../types/Task.type";
 
 import style from './taskCard.module.css'
 
@@ -15,15 +15,14 @@ type Props = {
     index: number
     newTask: number
     empty?: boolean
-    setTaskList: Dispatch<SetStateAction<Tasks>>
     setNewTask: Dispatch<SetStateAction<number>>
 }
 
-const TaskCard = ({ title, task, index, newTask, empty, setTaskList, setNewTask }: Props) => {
+const TaskCard = ({ title, task, index, newTask, empty, setNewTask }: Props) => {
     const [edit, setEdit] = useState<boolean>(false)
     const [currTask, setCurrTask] = useState<Task>(task)
 
-    const { updateTask, updateListOnDrop } = useTask(setTaskList)
+    const { updateTask, updateListOnDrop } = useTask()
 
     const dragRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +59,7 @@ const TaskCard = ({ title, task, index, newTask, empty, setTaskList, setNewTask 
         ref={dragRef}></div>
 
     return (
-        <div className={`${style.container} ${isDragging ? style.dragging : ''}`} onBlur={() => handleEdit(false)} ref={dragRef}>
+        <div className={`${style.container} ${isDragging ? style.dragging : ''}`} ref={dragRef}>
             <div className={style.textContainer}>
                 {edit || newTask === index ?
                     <TaskInput currTask={currTask} setCurrTask={setCurrTask} handleEdit={handleEdit} />
@@ -71,7 +70,7 @@ const TaskCard = ({ title, task, index, newTask, empty, setTaskList, setNewTask 
                 }
 
                 {!edit || newTask !== index ?
-                    <Menu title={title} index={index} currTask={currTask} setTaskList={setTaskList} handleEdit={handleEdit} />
+                    <Menu title={title} index={index} currTask={currTask} handleEdit={handleEdit} />
                     : null
                 }
             </div>

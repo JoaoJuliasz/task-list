@@ -41,6 +41,7 @@ const TaskInput = ({ currTask, setCurrTask, handleEdit }: Props) => {
         onKeyDown={handleKeyDown}
         ref={textareaRef}
         placeholder="untitled"
+        onBlur={() => handleEdit(false)}
     />;
 };
 

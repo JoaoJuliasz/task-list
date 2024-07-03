@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { List } from 'antd';
 import { Todo } from '../../../../../../../../types/Task.type';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -38,7 +38,7 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
     return (
         <List.Item>
             <span ref={textRef} dir="ltr" contentEditable="true" onInput={handleChange} />
-            <DeleteOutlined onClick={handleRemove}/>
+            <DeleteOutlined onClick={handleRemove} />
         </List.Item>
     );
 };

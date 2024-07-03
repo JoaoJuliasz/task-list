@@ -9,6 +9,7 @@ import { useMessage } from "../../hooks/useMessage";
 import { Tasks } from "../../types/Task.type";
 
 import style from './taskList.module.css'
+import { TaskListProvider } from "../../context/TaskListContext";
 
 type Props = {
     search: string
@@ -61,7 +62,7 @@ const TaskList = ({ search }: Props) => {
     }
 
     const renderDropdown = () => (
-        <UpdateTitleInput value="" handleClick={handleClick} placeholder="New column"/>
+        <UpdateTitleInput value="" handleClick={handleClick} placeholder="New column" />
     )
 
     useEffect(() => {
@@ -74,25 +75,27 @@ const TaskList = ({ search }: Props) => {
     }, [])
 
     return (
-        <div className={style.container}>
-            <div className={style.wrapper}>
-                <DndProvider backend={HTML5Backend}>
-                    {
-                        tasksTitles.map((title, index) =>
-                            <TaskContainer key={title + index} title={title}
-                                tasks={filteredItems[title]} index={index} setTaskList={setTaskList} moveItem={moveItem} setTasksTitles={setTasksTitles} />
-                        )
-                    }
-                </DndProvider>
-                <div className={style.add}>
-                    <Dropdown dropdownRender={renderDropdown} trigger={['click']} onOpenChange={handleVisibility}
-                        destroyPopupOnHide={true} open={open}>
-                        <PlusOutlined />
-                    </Dropdown>
+        <TaskListProvider value={{ taskList: filteredItems, setTaskList }}>
+            <div className={style.container}>
+                <div className={style.wrapper}>
+                    <DndProvider backend={HTML5Backend}>
+                        {
+                            tasksTitles.map((title, index) =>
+                                <TaskContainer key={title + index} title={title}
+                                    tasks={filteredItems[title]} index={index} moveItem={moveItem} setTasksTitles={setTasksTitles} />
+                            )
+                        }
+                    </DndProvider>
+                    <div className={style.add}>
+                        <Dropdown dropdownRender={renderDropdown} trigger={['click']} onOpenChange={handleVisibility}
+                            destroyPopupOnHide={true} open={open}>
+                            <PlusOutlined />
+                        </Dropdown>
+                    </div>
                 </div>
+                {contextHolder}
             </div>
-            {contextHolder}
-        </div>
+        </TaskListProvider>
     );
 };
 

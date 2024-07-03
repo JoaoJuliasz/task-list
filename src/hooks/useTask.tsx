@@ -1,10 +1,13 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { Task, Tasks } from "../types/Task.type";
+import { useTaskListContext } from "./useTaskListContext";
 
 const emptyTask: Task = { name: '', type: 'simple' }
 
-export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
+export const useTask = () => {
     const [newTask, setNewTask] = useState<number>(-1)
+
+    const { setTaskList } = useTaskListContext()
 
     const updateListOnDrop = useCallback((prevTitle: string, title: string, taskIndex: number, hoverIndex: number) => {
         setTaskList(prev => {
@@ -53,7 +56,7 @@ export const useTask = (setTaskList: Dispatch<SetStateAction<Tasks>>) => {
             localStorage.setItem("task-manager", JSON.stringify(updtList))
             return updtList
         })
-        setNewTask(prev => start ? 0 : taskSize)
+        setNewTask(() => start ? 0 : taskSize)
     }, [])
 
     const deleteOne = (title: string, index: number) => {
