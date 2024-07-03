@@ -1,5 +1,4 @@
 import { Dropdown } from "antd";
-import { Dispatch, SetStateAction } from "react";
 import { useTaskListContext } from "../../hooks/useTaskListContext";
 import UpdateTitleInput from "../UpdateTitleInput/UpdateTitleInput";
 import style from './updateTitle.module.css'
@@ -8,12 +7,11 @@ type Props = {
     index: number
     currTitle: string
     titleClassName: string
-    setTasksTitles: Dispatch<SetStateAction<string[]>>
 }
 
-const UpdateTitle = ({ index, currTitle, titleClassName, setTasksTitles }: Props) => {
+const UpdateTitle = ({ index, currTitle, titleClassName }: Props) => {
 
-    const { setTaskList } = useTaskListContext()
+    const { setTaskList, setTasksTitles } = useTaskListContext()
 
     const handleClick = (title: string) => {
         setTasksTitles(prev => {

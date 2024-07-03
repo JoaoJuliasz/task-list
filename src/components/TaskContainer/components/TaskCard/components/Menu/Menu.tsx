@@ -41,7 +41,6 @@ const Menu = ({ title, index, currTask, handleEdit }: Props) => {
             updtPrev[title][index].type = 'todo'
             updtPrev[title][index].list = taskTodoList
             localStorage.setItem('task-manager', JSON.stringify(updtPrev))
-            console.warn({ updtPrev })
             return updtPrev
         })
         setModalOpen(false)

@@ -4,22 +4,24 @@ import TaskCard from "../TaskCard/TaskCard";
 
 import style from './tasks.module.css';
 import { Task } from "../../../../types/Task.type";
+import { useTaskListContext } from "../../../../hooks/useTaskListContext";
 
 type Props = {
     title: string
-    taskList: Task[]
     newTask: number
     setNewTask: Dispatch<SetStateAction<number>>
     handleAdd: (title: string, start?: boolean | undefined) => void
 }
 
-const Tasks = ({ title, taskList, newTask, setNewTask, handleAdd }: Props) => {
+const Tasks = ({ title, newTask, setNewTask, handleAdd }: Props) => {
+
+    const { tasks } = useTaskListContext()
 
     return (
         <div className={style.container}>
             {
-                taskList?.length > 0 ?
-                    taskList?.map((task, index) => <TaskCard key={task + title + index}
+                tasks[title]?.length > 0 ?
+                    tasks[title]?.map((task, index) => <TaskCard key={task + title + index}
                         title={title} task={task}
                         index={index} newTask={newTask}
                         setNewTask={setNewTask} />)

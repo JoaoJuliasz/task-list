@@ -75,14 +75,13 @@ const TaskList = ({ search }: Props) => {
     }, [])
 
     return (
-        <TaskListProvider value={{ taskList: filteredItems, setTaskList }}>
+        <TaskListProvider value={{ taskList: filteredItems, setTaskList, setTasksTitles }}>
             <div className={style.container}>
                 <div className={style.wrapper}>
                     <DndProvider backend={HTML5Backend}>
                         {
                             tasksTitles.map((title, index) =>
-                                <TaskContainer key={title + index} title={title}
-                                    tasks={filteredItems[title]} index={index} moveItem={moveItem} setTasksTitles={setTasksTitles} />
+                                <TaskContainer key={title + index} title={title} index={index} moveItem={moveItem} />
                             )
                         }
                     </DndProvider>
