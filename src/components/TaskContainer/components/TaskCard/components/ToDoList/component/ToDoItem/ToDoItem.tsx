@@ -1,7 +1,10 @@
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef } from 'react';
-import { List } from 'antd';
-import { Todo } from '../../../../../../../../types/Task.type';
+import { Checkbox, CheckboxProps, List } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+
+import { Todo } from '../../../../../../../../types/Task.type';
+
+import style from './todoItem.module.css'
 
 type Props = {
     todo: Todo
@@ -29,6 +32,15 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
         });
     }
 
+    const handleUpdateTodo: CheckboxProps['onChange'] = (e) => {
+        const done = e.target.checked
+        setTaskTodoList(prev => {
+            const todoList = [...prev]
+            todoList[index] = { ...todoList[index], done }
+            return todoList
+        });
+    };
+
     useEffect(() => {
         if (textRef.current) {
             textRef.current.textContent = todo.item;
@@ -36,8 +48,11 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
     }, [todo.item]);
 
     return (
-        <List.Item>
-            <span ref={textRef} dir="ltr" contentEditable="true" onInput={handleChange} />
+        <List.Item className={style.container}>
+            <div className={style.todo}>
+                <Checkbox className={style.checkbox} checked={todo.done} onChange={handleUpdateTodo} />
+                <span className={`${style.title} ${todo.done ? style.done : ''}`} ref={textRef} dir="ltr" contentEditable="true" onInput={handleChange} />
+            </div>
             <DeleteOutlined onClick={handleRemove} />
         </List.Item>
     );

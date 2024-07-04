@@ -1,16 +1,17 @@
 import { useState } from "react";
+
 import { CopyOutlined, DeleteOutlined, EditOutlined, OrderedListOutlined } from "@ant-design/icons";
+import { MenuProps } from "antd";
 
 import MenuComponent from '../../../../../Menu/Menu'
+import ToDoModal from "../ToDoModal/ToDoModal";
 
-import { Task, Tasks, Todo } from "../../../../../../types/Task.type";
+import { useTask } from "../../../../../../hooks/useTask";
+
+import { Task } from "../../../../../../types/Task.type";
 
 import style from './menu.module.css'
 import homeStyle from '../../taskCard.module.css'
-import { useTask } from "../../../../../../hooks/useTask";
-import { MenuProps, Modal } from "antd";
-import ToDoList from "../ToDoList/ToDoList";
-import { useTaskListContext } from "../../../../../../hooks/useTaskListContext";
 
 
 type Props = {
@@ -21,29 +22,14 @@ type Props = {
 }
 
 const Menu = ({ title, index, currTask, handleEdit }: Props) => {
-    const [taskTodoList, setTaskTodoList] = useState<Todo[]>(currTask.list ?? [])
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [modalOpen, setModalOpen] = useState<boolean>(false)
-
-    const { setTaskList } = useTaskListContext()
 
     const { deleteOne } = useTask()
 
     const handleDelete = () => deleteOne(title, index)
-
     const handleTodoList = () => {
         setModalOpen(true)
-    }
-
-    const handleOnOkTodoList = () => {
-        setTaskList(prev => {
-            const updtPrev: Tasks = JSON.parse(JSON.stringify(prev))
-            updtPrev[title][index].type = 'todo'
-            updtPrev[title][index].list = taskTodoList
-            localStorage.setItem('task-manager', JSON.stringify(updtPrev))
-            return updtPrev
-        })
-        setModalOpen(false)
     }
 
     const copyToClipboard = () => navigator.clipboard.writeText(currTask.name);
@@ -58,13 +44,8 @@ const Menu = ({ title, index, currTask, handleEdit }: Props) => {
                 { key: '2', label: (<div onClick={handleTodoList}>To Do List</div>), itemIcon: <OrderedListOutlined /> },
                 { key: '3', label: (<div onClick={handleDelete}>Remove</div>), itemIcon: <DeleteOutlined /> }
             ] as MenuProps['items']} isOpen={isOpen} setIsOpen={setIsOpen} />
-            <Modal
-                title="To Do Items"
-                open={modalOpen}
-                onOk={handleOnOkTodoList}
-            >
-                <ToDoList todoList={taskTodoList} setTaskTodoList={setTaskTodoList} />
-            </Modal>
+            <ToDoModal title={title} index={index} todoList={currTask?.list}
+                modalOpen={modalOpen} setModalOpen={setModalOpen} />
         </div>
     );
 };

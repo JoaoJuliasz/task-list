@@ -1,6 +1,7 @@
-import { Button, Input, List } from "antd";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { List } from "antd";
 import { Todo } from "../../../../../../types/Task.type";
+import NewToDo from "./component/NewToDo/NewToDo";
 import ToDoItem from "./component/ToDoItem/ToDoItem";
 
 type Props = {
@@ -9,27 +10,9 @@ type Props = {
 }
 
 const ToDoList = ({ todoList, setTaskTodoList }: Props) => {
-    const [item, setItem] = useState<string>("")
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value
-        setItem(value)
-    }
-
-    const handleClick = () => {
-        setTaskTodoList(prev => {
-            prev.push({ item, done: false })
-            return [...prev]
-        })
-        setItem("")
-    }
-
     return (
         <div>
-            <div style={{ display: 'flex' }}>
-                <Input onChange={handleChange} value={item} />
-                <Button onClick={handleClick}>+</Button>
-            </div>
+            <NewToDo setTaskTodoList={setTaskTodoList} />
             <List
                 itemLayout="horizontal"
                 dataSource={todoList}
