@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+}
+
+.container .input {
+    border-radius: 3px !important;
+    border-color: var(--border-color) !important;
+    box-shadow: none !important;
+    margin-right: 10px;
+}
+
+.container .button {
+    color: var(--text-dark-color) !important;
+    border-radius: 3px !important;
+    border-color: var(--border-color) !important;
+}
+
+.container .input:hover,
+.container .input:focus,
+.container .button:hover{
+    border-color: var(--border-color-hover) !important;
+}

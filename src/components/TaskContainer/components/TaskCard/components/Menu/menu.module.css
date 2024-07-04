@@ -17,7 +17,7 @@
 
 .container .edit {
     cursor: pointer;
-    color: #fff;
+    color: var(--text-color-dark-bg);
     background: #2c2929;
     padding: 2px 7px;
     font-size: 14px;
@@ -33,12 +33,12 @@
 }
 
 .container .menu .item {
-    color: #fff;
+    color: var(--text-color-dark-bg);
 }
 
 .container .menu .itemHover {
     background: #ffffff0e !important;
-    color: #fff;
+    color: var(--text-color-dark-bg);
 }
 
 .container .menu .item span {

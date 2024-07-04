@@ -5,7 +5,7 @@
 .container .openMenu,
 :global(.ant-dropdown-menu) {
     cursor: pointer;
-    color: #fff;
+    color: var(--text-color-dark-bg);
     padding: 2px 7px !important;
     font-size: 14px;
     border-radius: 3px !important;
@@ -26,14 +26,14 @@
 }
 
 .container .menu .item {
-    color: #fff;
+    color: var(--text-color-dark-bg);
     font-size: 14px;
     padding-left: 12px;
 }
 
 .container .menu .itemHover {
     background: #ffffff0e !important;
-    color: #fff;
+    color: var(--text-color-dark-bg);
 }
 
 .container .menu .item span {
