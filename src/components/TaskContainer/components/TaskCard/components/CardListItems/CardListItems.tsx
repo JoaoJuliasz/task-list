@@ -19,7 +19,7 @@ const CardListItems = ({ title, index, taskList }: Props) => {
         <>
             <div className={style.container} onClick={() => setModalOpen(true)}>
                 <List className={style.list}>
-                    {taskList.map((item, index) =>
+                    {taskList.slice(0, 5).map((item, index) =>
                         <ToDoItem todo={item} index={index} isCard={true} />
                     )}
                 </List>
