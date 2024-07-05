@@ -8,6 +8,7 @@ import { useDragNDrop } from "../../../../hooks/useDragNDrop";
 import { Task } from "../../../../types/Task.type";
 
 import style from './taskCard.module.css'
+import CardListItems from "./components/CardListItems/CardListItems";
 
 type Props = {
     title: string
@@ -61,6 +62,10 @@ const TaskCard = ({ title, task, index, newTask, empty, setNewTask }: Props) => 
     return (
         <div className={`${style.container} ${isDragging ? style.dragging : ''}`} ref={dragRef}>
             <div className={style.textContainer}>
+                {task?.list ?
+                    <CardListItems title={title} index={index} taskList={task.list}/>
+                    : null
+                }
                 {edit || newTask === index ?
                     <TaskInput currTask={currTask} setCurrTask={setCurrTask} handleEdit={handleEdit} />
                     :

@@ -1,0 +1,11 @@
+.container {
+    margin-bottom: 8px;
+}
+
+.container .list {
+    pointer-events: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+}

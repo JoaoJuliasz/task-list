@@ -28,6 +28,7 @@ const Menu = ({ title, index, currTask, handleEdit }: Props) => {
     const { deleteOne } = useTask()
 
     const handleDelete = () => deleteOne(title, index)
+    
     const handleTodoList = () => {
         setModalOpen(true)
     }

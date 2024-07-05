@@ -1,23 +1,29 @@
 .container {
-border: none !important;
-padding: 6px 0 !important;
+    border: none !important;
+    padding: 6px 0 !important;
 }
 
-.container .todo .checkbox :global(.ant-checkbox-inner){
+.container .todo .checkbox :global(.ant-checkbox-inner) {
     border-radius: 3px !important;
     border-color: var(--border-color) !important;
 }
 
-.container .todo .checkbox:hover :global(.ant-checkbox-inner){
+.container .todo .checkbox:hover :global(.ant-checkbox-inner) {
     border-color: var(--border-color-hover) !important;
 }
 
 .container .todo .title {
-    margin: 0 4px;
+    margin: 0 6px;
     color: var(---text-dark-color);
 }
 
-.container .todo .title.done {
+.container .todo .lightTitle {
+    margin: 0 6px;
+    color: var(--text-color-dark-bg);
+}
+
+.container .todo .title.done,
+.container .todo .lightTitle.done {
     text-decoration: line-through;
     opacity: 0.5;
     transition: 0.2s opacity;

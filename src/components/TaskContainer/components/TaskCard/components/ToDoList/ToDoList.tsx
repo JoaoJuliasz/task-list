@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { List } from "antd";
 import { Todo } from "../../../../../../types/Task.type";
-import NewToDo from "./component/NewToDo/NewToDo";
 import ToDoItem from "./component/ToDoItem/ToDoItem";
 
 type Props = {
@@ -11,15 +10,11 @@ type Props = {
 
 const ToDoList = ({ todoList, setTaskTodoList }: Props) => {
     return (
-        <div>
-            <NewToDo setTaskTodoList={setTaskTodoList} />
-            <List
-                itemLayout="horizontal"
-                dataSource={todoList}
-                renderItem={(todo, index) => <ToDoItem todo={todo} index={index} setTaskTodoList={setTaskTodoList} />}
-                // pagination={{ position: 'bottom', align: 'end', }}
-            />
-        </div >
+        <List
+            itemLayout="horizontal"
+            dataSource={todoList}
+            renderItem={(todo, index) => <ToDoItem todo={todo} index={index} setTaskTodoList={setTaskTodoList} />}
+        />
     );
 };
 

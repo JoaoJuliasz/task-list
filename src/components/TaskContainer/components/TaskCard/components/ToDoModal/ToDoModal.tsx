@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { Modal } from "antd";
 import ToDoList from "../ToDoList/ToDoList";
+import NewToDo from "./component/NewToDo/NewToDo";
 
 import { useTaskListContext } from "../../../../../../hooks/useTaskListContext";
 
@@ -53,10 +54,11 @@ const ToDoModal = ({ title, index, todoList, modalOpen, setModalOpen }: Props) =
             onCancel={handleClose}
             destroyOnClose={true}
             closeIcon={false}
-            classNames={{content: style.container}}
-            cancelButtonProps={{className: style.cancel}}
-            okButtonProps={{className: style.ok}}
+            classNames={{ content: style.container }}
+            cancelButtonProps={{ className: style.cancel }}
+            okButtonProps={{ className: style.ok }}
         >
+            <NewToDo setTaskTodoList={setTaskTodoList} />
             <ToDoList todoList={taskTodoList} setTaskTodoList={setTaskTodoList} />
         </Modal>
     );

@@ -7,17 +7,18 @@ import { Todo } from '../../../../../../../../types/Task.type';
 import style from './todoItem.module.css'
 
 type Props = {
+    isCard?: boolean
     todo: Todo
     index: number
-    setTaskTodoList: Dispatch<SetStateAction<Todo[]>>
+    setTaskTodoList?: Dispatch<SetStateAction<Todo[]>>
 }
 
-const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
+const ToDoItem = ({ isCard, todo, index, setTaskTodoList }: Props) => {
     const textRef = useRef<HTMLHeadingElement>(null);
 
     const handleChange = (event: ChangeEvent<HTMLSpanElement>) => {
         const item = event.target.textContent || "";
-        setTaskTodoList(prev => {
+        setTaskTodoList?.(prev => {
             const todoList = [...prev]
             todoList[index] = { ...todoList[index], item }
             return todoList
@@ -25,7 +26,7 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
     };
 
     const handleRemove = () => {
-        setTaskTodoList(prev => {
+        setTaskTodoList?.(prev => {
             const todoList = [...prev]
             todoList.splice(index, 1)
             return todoList
@@ -34,7 +35,7 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
 
     const handleUpdateTodo: CheckboxProps['onChange'] = (e) => {
         const done = e.target.checked
-        setTaskTodoList(prev => {
+        setTaskTodoList?.(prev => {
             const todoList = [...prev]
             todoList[index] = { ...todoList[index], done }
             return todoList
@@ -51,9 +52,9 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
         <List.Item className={style.container}>
             <div className={style.todo}>
                 <Checkbox className={style.checkbox} checked={todo.done} onChange={handleUpdateTodo} />
-                <span className={`${style.title} ${todo.done ? style.done : ''}`} ref={textRef} dir="ltr" contentEditable="true" onInput={handleChange} />
+                <span className={`${!isCard ? style.title : style.lightTitle} ${todo.done ? style.done : ''}`} ref={textRef} dir="ltr" contentEditable="true" onInput={handleChange} />
             </div>
-            <DeleteOutlined className={style.remove} onClick={handleRemove} />
+            {!isCard && <DeleteOutlined className={style.remove} onClick={handleRemove} />}
         </List.Item>
     );
 };
