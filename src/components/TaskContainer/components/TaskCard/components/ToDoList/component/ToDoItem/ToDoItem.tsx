@@ -53,7 +53,7 @@ const ToDoItem = ({ todo, index, setTaskTodoList }: Props) => {
                 <Checkbox className={style.checkbox} checked={todo.done} onChange={handleUpdateTodo} />
                 <span className={`${style.title} ${todo.done ? style.done : ''}`} ref={textRef} dir="ltr" contentEditable="true" onInput={handleChange} />
             </div>
-            <DeleteOutlined onClick={handleRemove} />
+            <DeleteOutlined className={style.remove} onClick={handleRemove} />
         </List.Item>
     );
 };

@@ -20,5 +20,14 @@ padding: 6px 0 !important;
 .container .todo .title.done {
     text-decoration: line-through;
     opacity: 0.5;
+    transition: 0.2s opacity;
+}
+
+.container .remove {
+    color: var(---text-dark-color);
+}
+
+.container .remove:hover {
+    opacity: 0.5;
     transition: 0.3s opacity;
 }

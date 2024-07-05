@@ -7,6 +7,8 @@ import { useTaskListContext } from "../../../../../../hooks/useTaskListContext";
 
 import { Tasks, Todo } from "../../../../../../types/Task.type";
 
+import style from './todoModal.module.css'
+
 type Props = {
     todoList?: Todo[]
     title: string
@@ -51,6 +53,9 @@ const ToDoModal = ({ title, index, todoList, modalOpen, setModalOpen }: Props) =
             onCancel={handleClose}
             destroyOnClose={true}
             closeIcon={false}
+            classNames={{content: style.container}}
+            cancelButtonProps={{className: style.cancel}}
+            okButtonProps={{className: style.ok}}
         >
             <ToDoList todoList={taskTodoList} setTaskTodoList={setTaskTodoList} />
         </Modal>

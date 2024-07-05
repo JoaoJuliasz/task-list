@@ -17,7 +17,7 @@ const ToDoList = ({ todoList, setTaskTodoList }: Props) => {
                 itemLayout="horizontal"
                 dataSource={todoList}
                 renderItem={(todo, index) => <ToDoItem todo={todo} index={index} setTaskTodoList={setTaskTodoList} />}
-                pagination={{ position: 'bottom', align: 'end', }}
+                // pagination={{ position: 'bottom', align: 'end', }}
             />
         </div >
     );
