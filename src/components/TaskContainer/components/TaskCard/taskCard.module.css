@@ -17,7 +17,11 @@
     position: relative;
 }
 
-.container .textContainer .notEdit {
+.container .textContainer.taskList {
+    padding: unset;
+}
+
+.container .textContainer .text {
     text-align: left;
     height: 100%;
     width: 100%;
@@ -27,16 +31,13 @@
     font-family: monospace;
     line-height: normal;
     padding: 2px 2px 2.5px;
+    outline: none;
+    direction: ltr;
 }
 
-.container .textContainer .text {
-    border: none;
-    outline: none;
-    height: 100%;
-    resize: none;
-    width: 100%;
-    background: transparent;
-    font-size: 14px;
+.container .textContainer .text:empty:before {
+    content: attr(data-text);
+    -webkit-text-fill-color: #a19c9c;
 }
 
 .container.dragging .textContainer .text {

@@ -6,43 +6,53 @@ import { Task } from "../../../../../../types/Task.type";
 import style from '../../taskCard.module.css'
 
 type Props = {
+    condition: boolean
     currTask: Task
     setCurrTask: Dispatch<SetStateAction<Task>>
     handleEdit: (value: boolean) => void
 }
 
-const TaskInput = ({ currTask, setCurrTask, handleEdit }: Props) => {
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+const TaskInput = ({ condition, currTask, setCurrTask, handleEdit }: Props) => {
+    const textareaRef = useRef<HTMLDivElement>(null);
 
 
-    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const name = e.target.value
-        setCurrTask(prev => ({...prev, name}))
+    const handleChange = (e: ChangeEvent<HTMLDivElement>) => {
+        const name = e.target.textContent || "";
+        setCurrTask(prev => ({ ...prev, name }))
     }
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
             handleEdit(false)
         }
     }
 
     useEffect(() => {
-        const textarea = textareaRef?.current;
-        if (textarea) {
-            const length = textarea?.value.length;
-            textarea.focus();
-            textarea.setSelectionRange(length, length);
+        if (textareaRef.current) {
+            textareaRef.current.textContent = currTask.name;
         }
-    }, []);
+    }, [currTask]);
 
-    return <ReactTextareaAutosize className={style.text}
-        value={currTask.name}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        ref={textareaRef}
-        placeholder="untitled"
-        onBlur={() => handleEdit(false)}
-    />;
+    // useEffect(() => {
+    //     if (textareaRef.current && condition) {
+    //         const length = textareaRef.current.textContent?.length;
+    //         textareaRef.current.focus();
+    //         textareaRef.current.setSelectionRange(length, length);
+    //     }
+    // }, [condition])
+
+    return (
+        <div
+            className={style.text}
+            ref={textareaRef}
+            contentEditable={condition}
+            dir="ltr"
+            onInput={handleChange}
+            onKeyDown={handleKeyDown}
+            onBlur={() => handleEdit(false)}
+            data-text="untitled"
+        />
+    )
 };
 
 export default TaskInput;

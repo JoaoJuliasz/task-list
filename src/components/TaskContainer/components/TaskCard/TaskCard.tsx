@@ -63,16 +63,16 @@ const TaskCard = ({ title, task, index, newTask, empty, setNewTask }: Props) => 
         <div className={`${style.container} ${isDragging ? style.dragging : ''}`} ref={dragRef}>
             <div className={style.textContainer}>
                 {task?.list ?
-                    <CardListItems title={title} index={index} taskList={task.list}/>
+                    <CardListItems title={title} index={index} taskList={task.list} />
                     : null
                 }
-                {edit || newTask === index ?
-                    <TaskInput currTask={currTask} setCurrTask={setCurrTask} handleEdit={handleEdit} />
+                <TaskInput currTask={currTask} setCurrTask={setCurrTask} handleEdit={handleEdit} condition={edit || newTask === index} />
+                {/* {edit || newTask === index ?
                     :
                     <div className={style.notEdit}>
                         <span style={{ opacity: !currTask ? 0.4 : 1 }}>{currTask.name || 'untitled'}</span>
                     </div>
-                }
+                } */}
 
                 {!edit || newTask !== index ?
                     <Menu title={title} index={index} currTask={currTask} handleEdit={handleEdit} />
